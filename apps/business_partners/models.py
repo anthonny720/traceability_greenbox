@@ -1,4 +1,5 @@
 import uuid
+from datetime import datetime
 
 from django.db import models
 from django.utils.text import slugify
@@ -46,6 +47,12 @@ class ProviderMP(ContactProxy):
         verbose_name_plural = 'Proveedores Materia Prima'
         ordering = ['name']
 
+    def get_total_sales(self):
+        try:
+            current_date = datetime.date(datetime.now())
+            return self.provider_entry.all().filter(entryDate__year=current_date.year).count()
+        except:
+            return 0
 
 class Client(ContactProxy):
     class Meta:

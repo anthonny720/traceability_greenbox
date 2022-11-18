@@ -9,6 +9,7 @@ import React, {useState} from 'react'
 import {useDispatch} from "react-redux";
 import {map} from 'lodash'
 import Dropdown from "./Dropdown";
+import {logout} from "../../redux/actions/auth";
 
 const list = {
     'Producción': [{name: 'Procesos', href: '/production/'},],
@@ -17,13 +18,18 @@ const list = {
     }, {name: 'Acondicionado', href: '/quality/conditioning/'}, {
         name: 'Envasado', href: '/quality/terminated/'
     }, {name: 'Liberación', href: '/quality/released'}],
-    'Gestión': [{name: 'Control de jabas', href: '/boxes/'}, {
-        name: 'Kardex', href: '/kardex/'
+    'Logística': [{name: 'Recepción', href: '/logistic/reception'}, {
+        name: 'PackingList', href: '/logistic/packing-list'
+    }],
+    'COMEX': [{name: 'Documentación', href: '/comex/documentation'}],
+    'Gestión': [{name: 'Control de jabas', href: '/management/motions'}, {
+        name: 'Kardex', href: '/management/kardex'
     }, {name: 'Pago de estiba', href: '/payments/'},],
     'Socios de Negocios': [{name: 'Conductores', href: '/business-partners/driver/'}, {
         name: 'Clientes', href: '/business-partners/clients/'
     }, {name: 'Proveedores', href: '/business-partners/providers/'},],
     'Configuración': [{name: 'Usuarios', href: '/users/'}, {name: 'Historial', href: '/history/'}],
+
 
 }
 
@@ -42,6 +48,7 @@ export default function Navbar() {
     const dispatch = useDispatch()
 
     const logoutHandler = () => {
+        dispatch(logout())
         setRedirect(true);
     }
     if (redirect) {

@@ -56,6 +56,7 @@ class Motion(models.Model):
     fr = models.ForeignKey(ProviderMP, on_delete=models.CASCADE, related_name='fr', verbose_name="Destino")
     quantity = models.PositiveIntegerField(default=0, verbose_name="Cantidad")
 
+
     def __str__(self):
         try:
             return self.date.strftime('%d/%m/%Y')

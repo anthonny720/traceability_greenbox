@@ -19,6 +19,16 @@ class Fruits(models.Model):
 
     def __str__(self):
         return self.name
+    def get_stock(self):
+        t = 0
+        try:
+            for c in self.fruit_entry.all():
+                t += c.get_stock()
+            self.stock = t
+            self.save()
+            return t
+        except:
+            return 0
 
     class Meta:
         verbose_name = 'Frutas'
