@@ -15,6 +15,7 @@ import ProviderDetail from "./containers/pages/Provider";
 import ChangePassword from "./containers/pages/Password";
 import Users from "./containers/pages/Users";
 import Login from "./containers/pages/Login";
+import DetailLot from "./containers/pages/LotDetail";
 
 
 const App = () => {
@@ -40,6 +41,10 @@ const App = () => {
                     <Route path="/business-partners/providers" element={<Providers/>}/>
                     <Route path="/business-partners/providers/:slug" element={<ProviderDetail/>}/>
 
+
+                    {/*Logistic*/}
+
+                    <Route exact path="lot/:lot" element={<DetailLot/>}/>
 
                     {/*Authentication*/}
                     <Route path="login/" element={<Login/>}/>

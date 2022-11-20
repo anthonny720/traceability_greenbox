@@ -1,3 +1,4 @@
+import datetime
 import uuid
 
 from django.db import models
@@ -19,6 +20,7 @@ class Fruits(models.Model):
 
     def __str__(self):
         return self.name
+
     def get_stock(self):
         t = 0
         try:
@@ -27,6 +29,23 @@ class Fruits(models.Model):
             self.stock = t
             self.save()
             return t
+        except:
+            return 0
+
+    def get_motions(self):
+        current_date = datetime.datetime.now().date()
+        i = 0
+        o = 0
+        try:
+            for c in self.fruit_entry.filter(downloadDate=current_date):
+                i += c.get_total_net_weight()
+            self.input = i
+            for c in self.fruit_entry.all():
+                for d in c.data.filter(dateIndicted=current_date):
+                    o += d.get_net_final_weight()
+            self.output = o
+            self.save()
+            return {'input': i, 'output': o}
         except:
             return 0
 

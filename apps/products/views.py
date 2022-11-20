@@ -14,7 +14,7 @@ class ListFruitsView(APIView):
         except:
             day = 0
         try:
-            result = [{'id': sm.id, 'name': sm.name, 'stock': sm.get_stock()} for sm in
+            result = [{'id': sm.id, 'name': sm.name, 'stock': sm.get_stock(), 'summary': sm.get_motions()} for sm in
                       Fruits.objects.all().order_by('-id')]
             return Response({'categories': result, 'day': day}, status=status.HTTP_200_OK)
         except Exception as e:

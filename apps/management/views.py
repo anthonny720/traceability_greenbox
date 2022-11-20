@@ -4,8 +4,10 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from apps.business_partners.models import ProviderMP
-from apps.management.models import Kardex, Motion
+from apps.management.models import Kardex, Motion, Payments
+from apps.management.serializers import PaymentSerializer
 from apps.products.models import Fruits
+from apps.raw_material.models import Lot
 
 
 class ListKardexView(APIView):
@@ -129,6 +131,60 @@ class DeleteMotionView(APIView):
             receiver.save()
             motion.delete()
             return Response({'message': 'Movimiento eliminado'}, status=status.HTTP_200_OK)
+        except:
+            return Response({'error': 'Ocurrió un error al eliminar el registro'},
+                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+class ListPaymentsView(APIView):
+    def get(self, request, format=None):
+        try:
+            if Payments.objects.all().exists():
+                result = [{'id': pay.id, 'name': pay.name, 'business_name': pay.business_name,
+                           'report': pay.report.lot, 'weight': pay.weight, 'amount': pay.amount,
+                           'report_id': pay.report.id,
+                           'status': pay.status, 'date': pay.date, 'cancelled': pay.cancelled, 'receipt': pay.receipt}
+                          for pay in
+                          Payments.objects.all().order_by('-cancelled', '-id')]
+                return Response({'payments': result}, status=status.HTTP_200_OK)
+            else:
+                return Response({'No se encontraron registro de pagos'}, status=status.HTTP_400_BAD_REQUEST)
+        except:
+            return Response({"Ocurrió un error al obtener los registros"},
+                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    def post(self, request, format=None):
+        data = request.data
+        if Payments.objects.filter(report=Lot.objects.get(id=data['report'])).exists():
+            return Response({'error': 'El registro para este informe ya existe.'}, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            serializer = PaymentSerializer(data=data)
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
+            return Response({'message': "Pago registrado correctamente"}, status=status.HTTP_201_CREATED)
+        except Exception as e:
+            return Response({"error": "Ocurrió un error al registrar el pago"},
+                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+class DetailPaymentView(APIView):
+
+    def patch(self, request, *args, **kwargs):
+        inf = get_object_or_404(Payments, id=kwargs['id'])
+        try:
+            serializer = PaymentSerializer(inf, data=request.data, partial=True)
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
+            return Response({'message': "Pago actualizado correctamente"}, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({"error": "Ocurrió un error al actualizar el registro"},
+                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    def delete(self, request, *args, **kwargs):
+        try:
+            inf = get_object_or_404(Payments, id=kwargs['id'])
+            inf.delete()
+            return Response({"message": "Pago eliminado correctamente"}, status=status.HTTP_200_OK)
         except:
             return Response({'error': 'Ocurrió un error al eliminar el registro'},
                             status=status.HTTP_500_INTERNAL_SERVER_ERROR)

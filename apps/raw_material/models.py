@@ -347,6 +347,12 @@ class ILot(models.Model):
         except:
             return 0
 
+    def get_indicted(self):
+        if self.indicted:
+            return "✔"
+        else:
+            return "✘"
+
 
 @receiver(pre_save, sender=ILot)
 def my_callback(sender, instance, *args, **kwargs):
