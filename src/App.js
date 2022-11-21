@@ -14,8 +14,16 @@ import Client from "./containers/pages/Client";
 import ProviderDetail from "./containers/pages/Provider";
 import ChangePassword from "./containers/pages/Password";
 import Users from "./containers/pages/Users";
-import Login from "./containers/pages/Login";
+import Login from "./containers/authentication/Login";
 import DetailLot from "./containers/pages/LotDetail";
+import Test from "./containers/pages/Test";
+import Analysis from "./containers/pages/Analysis";
+import Conditioning from "./containers/pages/Conditioning";
+import Terminated from "./containers/pages/Terminated";
+import Released from "./containers/pages/Released";
+import ProcessLine from "./containers/pages/ProcessLine";
+import Carrier from "./containers/pages/Carrier";
+import Payments from "./containers/pages/Payments";
 
 
 const App = () => {
@@ -33,9 +41,11 @@ const App = () => {
                     {/* Management */}
                     <Route path="/management/kardex" element={<Kardex/>}/>
                     <Route path="/management/motions" element={<Motions/>}/>
+                    <Route path="/management/payments" element={<Payments/>}/>
 
                     {/*Business partners*/}
                     <Route path="/business-partners/driver" element={<Drivers/>}/>
+                    <Route path="/business-partners/carrier" element={<Carrier/>}/>
                     <Route path="/business-partners/clients" element={<Clients/>}/>
                     <Route path="/business-partners/clients/:slug" element={<Client/>}/>
                     <Route path="/business-partners/providers" element={<Providers/>}/>
@@ -45,6 +55,15 @@ const App = () => {
                     {/*Logistic*/}
 
                     <Route exact path="lot/:lot" element={<DetailLot/>}/>
+
+                    {/*Quality*/}
+                    <Route exact path="quality/cut-test" element={<Test/>}/>
+                    <Route exact path="quality/analysis" element={<Analysis/>}/>
+                    {/*Process Line*/}
+                    <Route exact path="quality/conditioning" element={<Conditioning/>}/>
+                    <Route exact path="quality/terminated" element={<Terminated/>}/>
+                    <Route exact path="quality/released" element={<Released/>}/>
+                    <Route exact path="process-line/:lot" element={<ProcessLine/>}/>
 
                     {/*Authentication*/}
                     <Route path="login/" element={<Login/>}/>

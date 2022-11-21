@@ -2,8 +2,9 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from apps.products.models import Fruits, Pallets
+from apps.products.models import Fruits, Pallets, PackingProduct
 from apps.products.scraping import get_day
+from apps.products.serializers import PackingContainersSerializer
 
 
 # Create your views here.
@@ -30,3 +31,21 @@ class ListPalletsView(APIView):
         else:
             return Response({'error': 'Ocurrio un error al obtener registros'},
                             status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+class ListBoxSerializers(APIView):
+    def get(self, request):
+        if PackingProduct.objects.filter(type='Cajas').exists():
+            serializer = PackingContainersSerializer(PackingProduct.objects.filter(type='Cajas'), many=True)
+            return Response({'result': serializer.data}, status=status.HTTP_200_OK)
+        else:
+            return Response({'error': 'No se encontraron registros'}, status=status.HTTP_404_NOT_FOUND)
+
+
+class ListBagsSerializers(APIView):
+    def get(self, request):
+        if PackingProduct.objects.filter(type='Bolsas').exists():
+            serializer = PackingContainersSerializer(PackingProduct.objects.filter(type='Bolsas'), many=True)
+            return Response({'result': serializer.data}, status=status.HTTP_200_OK)
+        else:
+            return Response({'error': 'No se encontraron registros'}, status=status.HTTP_404_NOT_FOUND)

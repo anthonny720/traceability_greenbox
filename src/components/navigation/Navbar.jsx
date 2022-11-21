@@ -24,13 +24,13 @@ const list = {
     'COMEX': [{name: 'Documentación', href: '/comex/documentation'}],
     'Gestión': [{name: 'Control de jabas', href: '/management/motions'}, {
         name: 'Kardex', href: '/management/kardex'
-    }, {name: 'Pago de estiba', href: '/payments/'},],
+    }, {name: 'Pago de estiba', href: '/management/payments'},],
     'Socios de Negocios': [{name: 'Conductores', href: '/business-partners/driver/'}, {
         name: 'Clientes', href: '/business-partners/clients/'
-    }, {name: 'Proveedores', href: '/business-partners/providers/'},],
+    }, {name: 'Proveedores', href: '/business-partners/providers/'},
+         {name: 'Transportes', href: '/business-partners/carrier/'},
+    ],
     'Configuración': [{name: 'Usuarios', href: '/users/'}, {name: 'Historial', href: '/history/'}],
-
-
 }
 
 const social = [{

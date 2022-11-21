@@ -54,11 +54,19 @@ class ProviderMP(ContactProxy):
         except:
             return 0
 
+
 class Client(ContactProxy):
     class Meta:
         verbose_name = 'Cliente Comercial'
         verbose_name_plural = 'Clientes Comerciales'
         ordering = ['-id']
+
+    def get_total_sales(self):
+        try:
+            current_date = datetime.date(datetime.now())
+            return self.client_released.all().filter(release_date__year=current_date.year).count()
+        except:
+            return 0
 
     def __str__(self):
         return self.name
