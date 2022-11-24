@@ -107,12 +107,17 @@ class DetailInformationView(APIView):
             return Response({"error": "Ocurrió un problema interno. Contáctese con el administrador"},
                             status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         try:
+            if not request.data.get("indicted"):
+                request.data["indicted"] = False
+                request.data["dateIndicted"] = None
+            else:
+                request.data["indicted"] = True
             serializer = ILotCRUDSerializer(inf, data=request.data, partial=True)
             serializer.is_valid(raise_exception=True)
             serializer.save()
             return Response({'message': 'Item actualizado correctamente'}, status=status.HTTP_200_OK)
-        except:
-            return Response({"error": {'Ocurrió un error al actualizar el item'}}, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            return Response({"error": 'Ocurrió un error al actualizar el item','detail':str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, *args, **kwargs):
         # if not request.user.is_superuser:
@@ -132,4 +137,14 @@ class DetailInformationView(APIView):
             return Response({"message": "Item eliminado correctamente"}, status=status.HTTP_200_OK)
         except:
             return Response({"error": "Ocurrió un error al eliminar el registro"},
+                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+class ListLotProductionView(APIView):
+    def get(self, request, format=None):
+        if Lot.objects.all().exists():
+            serializer = LotListSerializer(Lot.objects.all()[:15], many=True)
+            return Response({'result': serializer.data}, status=status.HTTP_200_OK)
+        else:
+            return Response({'error': 'No se encontraron registro de lotes'},
                             status=status.HTTP_500_INTERNAL_SERVER_ERROR)

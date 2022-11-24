@@ -21,6 +21,7 @@ const Home = () => {
     const day = useSelector(state => state.Products.day);
     const lots = useSelector(state => state.RawMaterial.lots);
 
+
     const [columns] = useState([{field: 'id', title: 'Id', filtering: false}, {
         field: 'downloadDate',
         title: 'Fecha de Descarga',

@@ -49,11 +49,11 @@ PROJECT_APPS = [
     'apps.process_line',
     'apps.production',
     'apps.warehouse',
-    'apps.comex',
     'apps.report'
 ]
 THIRD_PARTY_APPS = [
     'corsheaders',
+    'simple_history',
     'rest_framework',
     'import_export',
     'djoser',
@@ -72,6 +72,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'simple_history.middleware.HistoryRequestMiddleware',
 ]
 
 ROOT_URLCONF = 'core.urls'

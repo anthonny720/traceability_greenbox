@@ -24,6 +24,14 @@ import Released from "./containers/pages/Released";
 import ProcessLine from "./containers/pages/ProcessLine";
 import Carrier from "./containers/pages/Carrier";
 import Payments from "./containers/pages/Payments";
+import Program from "./containers/pages/Program";
+import PackingList from "./containers/pages/PackingList";
+import ProgramDetail from "./containers/pages/ProgramDetail";
+import PackingListDetail from "./containers/pages/PackingListDetail";
+import ProcessProduction from "./containers/pages/ProcessProduction";
+import DetailProcessPineapple from "./containers/pages/DetailProcessPineapple";
+import Report from "./containers/pages/Report";
+import Camera from "./containers/pages/Camera";
 
 
 const App = () => {
@@ -42,6 +50,7 @@ const App = () => {
                     <Route path="/management/kardex" element={<Kardex/>}/>
                     <Route path="/management/motions" element={<Motions/>}/>
                     <Route path="/management/payments" element={<Payments/>}/>
+                    <Route path="/management/cameras" element={<Camera/>}/>
 
                     {/*Business partners*/}
                     <Route path="/business-partners/driver" element={<Drivers/>}/>
@@ -53,8 +62,11 @@ const App = () => {
 
 
                     {/*Logistic*/}
-
                     <Route exact path="lot/:lot" element={<DetailLot/>}/>
+                    <Route exact path="logistic/reception" element={<Program/>}/>
+                    <Route exact path="logistic/reception/:slug" element={<ProgramDetail/>}/>
+                    <Route exact path="logistic/packing-list" element={<PackingList/>}/>
+                    <Route exact path="logistic/packing-list/:slug" element={<PackingListDetail/>}/>
 
                     {/*Quality*/}
                     <Route exact path="quality/cut-test" element={<Test/>}/>
@@ -69,6 +81,14 @@ const App = () => {
                     <Route path="login/" element={<Login/>}/>
                     <Route exact path="users/" element={<Users/>}/>
                     <Route exact path="me/change-password/" element={<ChangePassword/>}/>
+
+                    {/*Production*/}
+                    <Route exact path="production/" element={<ProcessProduction/>}/>
+                    <Route exact path="production/pineapple/:lot" element={<DetailProcessPineapple/>}/>
+
+                    {/*Report*/}
+                    <Route exact path="report/:category" element={<Report/>}/>
+
 
                 </Routes>
             </Router>

@@ -7,5 +7,10 @@ import Auth from "./auth";
 import RawMaterial from "./raw_material";
 import Quality from "./quality";
 import Process from "./process_line";
+import Logistic from "./logistic";
+import Production from "./production";
+import Report from "./report";
 
-export default combineReducers({Products, Alert, Management, Business, Auth, RawMaterial, Quality, Process});
+export default combineReducers({
+    Products, Alert, Management, Business, Auth, RawMaterial, Quality, Process, Logistic, Production, Report
+});

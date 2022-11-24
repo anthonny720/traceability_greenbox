@@ -5,11 +5,12 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faG} from "@fortawesome/free-solid-svg-icons";
 import {Navigate, NavLink} from "react-router-dom";
 import PopoverMe from "./PopoverMe";
-import React, {useState} from 'react'
-import {useDispatch} from "react-redux";
+import React, {useEffect, useState} from 'react'
+import {useDispatch, useSelector} from "react-redux";
 import {map} from 'lodash'
 import Dropdown from "./Dropdown";
 import {logout} from "../../redux/actions/auth";
+import {toast} from "react-toastify";
 
 const list = {
     'Producción': [{name: 'Procesos', href: '/production/'},],
@@ -21,15 +22,15 @@ const list = {
     'Logística': [{name: 'Recepción', href: '/logistic/reception'}, {
         name: 'PackingList', href: '/logistic/packing-list'
     }],
-    'COMEX': [{name: 'Documentación', href: '/comex/documentation'}],
-    'Gestión': [{name: 'Control de jabas', href: '/management/motions'}, {
+    'Gestión': [{name: 'Cámaras', href: '/management/cameras'},{name: 'Control de jabas', href: '/management/motions'}, {
         name: 'Kardex', href: '/management/kardex'
     }, {name: 'Pago de estiba', href: '/management/payments'},],
     'Socios de Negocios': [{name: 'Conductores', href: '/business-partners/driver/'}, {
         name: 'Clientes', href: '/business-partners/clients/'
-    }, {name: 'Proveedores', href: '/business-partners/providers/'},
-         {name: 'Transportes', href: '/business-partners/carrier/'},
-    ],
+    }, {name: 'Proveedores', href: '/business-partners/providers/'}, {
+        name: 'Transportes',
+        href: '/business-partners/carrier/'
+    },],
     'Configuración': [{name: 'Usuarios', href: '/users/'}, {name: 'Historial', href: '/history/'}],
 }
 
@@ -44,8 +45,21 @@ function classNames(...classes) {
 export default function Navbar() {
 
     const [redirect, setRedirect] = useState(false);
-
+    const alert = useSelector(state => state.Alert);
     const dispatch = useDispatch()
+
+    useEffect(() => {
+        alert?.text && alert?.type && toast(alert.text, {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: false,
+            progress: undefined,
+            type: alert.type
+        });
+    }, [alert]);
 
     const logoutHandler = () => {
         dispatch(logout())
@@ -55,6 +69,9 @@ export default function Navbar() {
         window.location.reload(false)
         return <Navigate to='/'/>;
     }
+
+
+
     return (<>
 
         <Helmet>

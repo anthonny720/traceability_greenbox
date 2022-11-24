@@ -12,6 +12,9 @@ urlpatterns = [path('admin/', admin.site.urls), path('auth/', include('djoser.ur
                path('api/raw-material/', include('apps.raw_material.urls')),
                path('api/quality/', include('apps.quality.urls')),
                path('api/process-line/', include('apps.process_line.urls')),
+               path('api/production/', include('apps.production.urls')),
+               path('api/report/', include('apps.report.urls')),
+               path('api/logistic/', include('apps.warehouse.urls')),
                ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

@@ -3,6 +3,7 @@ from datetime import datetime
 
 from django.db import models
 from django.utils.text import slugify
+from simple_history.models import HistoricalRecords
 
 
 # Create your models here.
@@ -38,6 +39,9 @@ class ContactProxy(models.Model):
 class ProviderMP(ContactProxy):
     code = models.CharField(max_length=2, blank=True, null=True, verbose_name="Código", unique=True)
     stock = models.PositiveIntegerField(default=0, verbose_name="Stock")
+    category = models.ForeignKey(to='products.Fruits', on_delete=models.PROTECT, null=True, blank=True,
+                                 related_name='provider', verbose_name="Categoría")
+    history = HistoricalRecords()
 
     def __str__(self):
         return self.name
@@ -56,6 +60,8 @@ class ProviderMP(ContactProxy):
 
 
 class Client(ContactProxy):
+    history = HistoricalRecords()
+
     class Meta:
         verbose_name = 'Cliente Comercial'
         verbose_name_plural = 'Clientes Comerciales'
@@ -73,6 +79,8 @@ class Client(ContactProxy):
 
 
 class ProviderPacking(ContactProxy):
+    history = HistoricalRecords()
+
     def __str__(self):
         return self.name
 
@@ -89,6 +97,7 @@ class Contact(models.Model):
     phone = models.IntegerField(verbose_name="Teléfono")
     licence = models.CharField(max_length=9, blank=True, null=True, verbose_name="Licencia")
     reference = models.CharField(max_length=50, blank=True, null=True, verbose_name="Referencia")
+    history = HistoricalRecords()
 
     def __str__(self):
         return self.name
@@ -103,6 +112,7 @@ class Carrier(models.Model):
     name = models.CharField(max_length=50, verbose_name="Nombre")
     ruc = models.CharField(blank=True, null=True, max_length=11, verbose_name="RUC")
     code = models.CharField(max_length=10, blank=True, null=True, verbose_name="Placa", unique=True)
+    history = HistoricalRecords()
 
     def __str__(self):
         return self.name

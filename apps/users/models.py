@@ -1,11 +1,11 @@
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 from django.db import models
+from simple_history.models import HistoricalRecords
 
 # Create your models here.
 
-Roles = (
-('1', 'Operaciones'), ('2', 'Logistica'), ('3', 'Acopio'), ('4', 'Administración'), ('5', 'Calidad'), ('6', 'Acopio'),
-('7', 'Producción'), ('8', 'Visualizador'))
+Roles = (('1', 'Operaciones'), ('2', 'Logistica'), ('3', 'Acopio'), ('4', 'Administración'), ('5', 'Calidad'),
+         ('6', 'Materia Prima'), ('7', 'Producción'), ('8', 'Visualizador'),)
 
 
 class UserAccountManager(BaseUserManager):
@@ -37,6 +37,7 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False)
     role = models.CharField(max_length=1, choices=Roles, default='8')
     created_at = models.DateTimeField(auto_now_add=True)
+    history = HistoricalRecords()
 
     objects = UserAccountManager()
 

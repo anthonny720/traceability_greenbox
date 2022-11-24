@@ -1,11 +1,12 @@
 from django.db import models
+from simple_history.models import HistoricalRecords
 
 from apps.raw_material.models import Lot
 
 
 # Prueba de corte para Piña
 class CutTest(models.Model):
-    lot = models.ForeignKey(Lot, on_delete=models.CASCADE, verbose_name='Lote', related_name='cut_test')
+    lot = models.ForeignKey(Lot, on_delete=models.PROTECT, verbose_name='Lote', related_name='cut_test')
     caliber = models.CharField(choices=[('6', '6'), ('8', '8'), ('10', '10'), ('12', '12'), ('14', '14')], default='6',
                                max_length=2, verbose_name='Calibre')
     cut_fresh_1_8 = models.IntegerField(verbose_name='Peso en fresco (corte 1/8)',
@@ -13,6 +14,7 @@ class CutTest(models.Model):
     cut_1_8 = models.IntegerField(verbose_name='Peso corte <> 1/8', blank=True,
                                   null=True, default=0)
     eyes = models.DecimalField(max_digits=4, decimal_places=2, verbose_name='Ojitos', blank=True, null=True, default=0)
+    history = HistoricalRecords()
 
     class Meta:
         verbose_name = 'Prueba de Corte para Piña'
@@ -61,7 +63,7 @@ class CutTest(models.Model):
 
 # Análisis de calidad para Piña
 class AnalysisPineapple(models.Model):
-    lot = models.OneToOneField(Lot, on_delete=models.CASCADE, related_name="analysis_pineapple",
+    lot = models.OneToOneField(Lot, on_delete=models.PROTECT, related_name="analysis_pineapple",
                                verbose_name="Lote MP")
 
     maturation_0_plant = models.DecimalField(decimal_places=2, max_digits=4, default=0, blank=True, null=True,
@@ -76,6 +78,7 @@ class AnalysisPineapple(models.Model):
                                              verbose_name=u"Maduración 4 Planta %")
     maturation_5_plant = models.DecimalField(decimal_places=2, max_digits=4, default=0, blank=True, null=True,
                                              verbose_name=u"Maduración 5 Planta %")
+    history = HistoricalRecords()
 
     class Meta:
         verbose_name = "Análisis de Piña"
@@ -96,7 +99,7 @@ class AnalysisPineapple(models.Model):
 
 
 class AnalysisAguaymanto(models.Model):
-    lot = models.OneToOneField(Lot, on_delete=models.CASCADE, related_name="analysis_aguaymanto",
+    lot = models.OneToOneField(Lot, on_delete=models.PROTECT, related_name="analysis_aguaymanto",
                                verbose_name="Lote MP")
 
     maturation_1 = models.DecimalField(decimal_places=2, max_digits=4, default=0, blank=True, null=True,
@@ -118,8 +121,7 @@ class AnalysisAguaymanto(models.Model):
                                  verbose_name='Consistencia aguada')
     defects = models.DecimalField(decimal_places=2, max_digits=4, default=0, blank=True, null=True,
                                   verbose_name=u"Defectos")
-
-
+    history = HistoricalRecords()
 
     def __str__(self):
         return self.lot.lot
@@ -140,7 +142,7 @@ class AnalysisAguaymanto(models.Model):
 
 
 class AnalysisBanano(models.Model):
-    lot = models.OneToOneField(Lot, on_delete=models.CASCADE, related_name="analysis_banano",
+    lot = models.OneToOneField(Lot, on_delete=models.PROTECT, related_name="analysis_banano",
                                verbose_name="Lote MP")
 
     maturation_1 = models.DecimalField(decimal_places=2, max_digits=4, default=0, blank=True, null=True,
@@ -157,6 +159,7 @@ class AnalysisBanano(models.Model):
                                verbose_name=u"Cicatriz")
     unharmed = models.DecimalField(decimal_places=2, max_digits=4, default=0, blank=True, null=True,
                                    verbose_name=u"Sin daños")
+    history = HistoricalRecords()
 
     def __str__(self):
         return self.lot.lot
@@ -177,7 +180,7 @@ class AnalysisBanano(models.Model):
 
 
 class AnalysisBlueberry(models.Model):
-    lot = models.OneToOneField(Lot, on_delete=models.CASCADE, related_name="analysis_blueberry",
+    lot = models.OneToOneField(Lot, on_delete=models.PROTECT, related_name="analysis_blueberry",
                                verbose_name="Lote MP")
 
     average_brix = models.DecimalField(decimal_places=2, max_digits=4, default=0, blank=True, null=True,
@@ -199,6 +202,7 @@ class AnalysisBlueberry(models.Model):
                                              verbose_name=u"Daños mecánicos")
     unharmed = models.DecimalField(decimal_places=2, max_digits=4, default=0, blank=True, null=True,
                                    verbose_name=u"Sin daños")
+    history = HistoricalRecords()
 
     class Meta:
         verbose_name = "Análisis de Arándanos"
@@ -213,13 +217,13 @@ class AnalysisBlueberry(models.Model):
 
 
 class AnalysisMango(models.Model):
-    lot = models.OneToOneField(Lot, on_delete=models.CASCADE, related_name="analysis_mango",
+    lot = models.OneToOneField(Lot, on_delete=models.PROTECT, related_name="analysis_mango",
                                verbose_name="Lote MP")
 
-    color_1_5 = models.DecimalField(decimal_places=2, max_digits=4, default=0, blank=True, null=True,
-                                    verbose_name=u"Color <1-5")
-    color_1_5_2 = models.DecimalField(decimal_places=2, max_digits=4, default=0, blank=True, null=True,
-                                      verbose_name=u"Color 1,5 -  2")
+    color_1 = models.DecimalField(decimal_places=2, max_digits=4, default=0, blank=True, null=True,
+                                  verbose_name=u"Color 1")
+    color_1_5_2_5 = models.DecimalField(decimal_places=2, max_digits=4, default=0, blank=True, null=True,
+                                        verbose_name=u"Color 1,5 -  2,5")
     color_3 = models.DecimalField(decimal_places=2, max_digits=4, default=0, blank=True, null=True,
                                   verbose_name=u"Color >=3")
     brix_7_9 = models.DecimalField(decimal_places=2, max_digits=4, default=0, blank=True, null=True,
@@ -234,30 +238,51 @@ class AnalysisMango(models.Model):
                                          verbose_name=u"Peso 280-300 ")
     weight_300 = models.DecimalField(decimal_places=2, max_digits=4, default=0, blank=True, null=True,
                                      verbose_name=u"Peso >300 ")
-    cracked_mechanical_damage = models.DecimalField(decimal_places=2, max_digits=4, default=0, blank=True, null=True,
-                                                    verbose_name=u"Rajados y daños mecanicos")
+    mechanical_damage = models.DecimalField(decimal_places=2, max_digits=4, default=0, blank=True, null=True,
+                                            verbose_name=u"Daños mecanicos")
+    cracked = models.DecimalField(decimal_places=2, max_digits=4, default=0, blank=True, null=True,
+                                  verbose_name=u"Rajado")
     sun_damage = models.DecimalField(decimal_places=2, max_digits=4, default=0, blank=True, null=True,
                                      verbose_name=u"Daños de sol")
     anthracnose = models.DecimalField(decimal_places=2, max_digits=4, default=0, blank=True, null=True,
                                       verbose_name=u"Antracnosis")
     rot = models.DecimalField(decimal_places=2, max_digits=4, default=0, blank=True, null=True,
                               verbose_name=u"Pudricion")
-    soft = models.DecimalField(decimal_places=2, max_digits=4, default=0, blank=True, null=True, verbose_name=u"Blando")
-    advanced = models.DecimalField(decimal_places=2, max_digits=4, default=0, blank=True, null=True,
-                                   verbose_name=u"Avanzado")
+    mature = models.DecimalField(decimal_places=2, max_digits=4, default=0, blank=True, null=True,
+                                 verbose_name=u"Sobre maduro")
+    latex = models.DecimalField(decimal_places=2, max_digits=4, default=0, blank=True, null=True,
+                                verbose_name=u"Latex")
+    queresa = models.DecimalField(decimal_places=2, max_digits=4, default=0, blank=True, null=True,
+                                  verbose_name=u"Queresa")
     insect_bite = models.DecimalField(decimal_places=2, max_digits=4, default=0, blank=True, null=True,
                                       verbose_name=u"Picadura de insectos")
-    unharmed = models.DecimalField(decimal_places=2, max_digits=4, default=0, blank=True, null=True,
-                                   verbose_name=u"Sin daños")
+    soft = models.DecimalField(decimal_places=2, max_digits=4, default=0, blank=True, null=True,
+                               verbose_name=u"Fruta Blanda")
+    advanced = models.DecimalField(decimal_places=2, max_digits=4, default=0, blank=True, null=True,
+                                   verbose_name=u"Avanzado")
+
+    history = HistoricalRecords()
 
     class Meta:
         verbose_name = "Análisis de Mango"
         verbose_name_plural = "Análisis de Mango"
         ordering = ['-id']
 
+    def get_total_defects(self):
+        try:
+            return self.mechanical_damage + self.cracked + self.sun_damage + self.anthracnose + self.rot + self.mature + \
+                   self.latex + self.queresa + self.insect_bite + self.soft + self.advanced
+        except:
+            return 0
+
+    def get_total_unharmed(self):
+        try:
+            return 100 - self.get_total_defects()
+        except:
+            return 0
+
     def get_lot(self):
         return self.lot.lot
 
     def __str__(self):
         return self.lot.lot
-

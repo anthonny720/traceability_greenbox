@@ -7,7 +7,8 @@ from rest_framework.views import APIView
 
 from apps.process_line.models import ProcessLineConditioning, ProcessLineTerminated, ProcessLineReleased, TypesCut
 from apps.process_line.serializers import ConditioningListSerializer, TerminatedListSerializer, LiberatedListSerializer, \
-    ConditioningSerializer, TypeCutSerializer, TerminatedSerializer, ReleasedSerializer
+    ConditioningSerializer, TypeCutSerializer, TerminatedSerializer, ReleasedSerializer, \
+    LiberatedReceptionListSerializer
 
 
 # Create your views here.
@@ -236,6 +237,15 @@ class CreateReleasedView(APIView):
         except Exception as e:
             return Response({'error': "Ocurrió un error al realizar el registro, verifique los datos ingresados."},
                             status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-from django.shortcuts import render
+
 
 # Create your views here.
+
+class ListReleasedReceptionView(APIView):
+    def get(self, request, *args, **kwargs):
+        queryset = ProcessLineReleased.objects.all()[0:50]
+        try:
+            serializers = LiberatedReceptionListSerializer(queryset, many=True)
+            return Response({'result': serializers.data}, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({'error': 'Ocurrió un error al obtener los registros'}, status=status.HTTP_400_BAD_REQUEST)

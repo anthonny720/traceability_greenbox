@@ -4,10 +4,11 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from apps.business_partners.models import ProviderMP
-from apps.management.models import Kardex, Motion, Payments
-from apps.management.serializers import PaymentSerializer
+from apps.management.models import Kardex, Motion, Payments, Location
+from apps.management.serializers import PaymentSerializer, LocationSerializer
 from apps.products.models import Fruits
 from apps.raw_material.models import Lot
+from apps.raw_material.serializers import DataLocationSerializer
 
 
 class ListKardexView(APIView):
@@ -187,4 +188,26 @@ class DetailPaymentView(APIView):
             return Response({"message": "Pago eliminado correctamente"}, status=status.HTTP_200_OK)
         except:
             return Response({'error': 'Ocurrió un error al eliminar el registro'},
+                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+class ListLocationView(APIView):
+    def get(self, request, *args, **kwargs):
+        if Location.objects.all().exists():
+            serializer = LocationSerializer(Location.objects.all(), many=True)
+            return Response({'result': serializer.data}, status=status.HTTP_200_OK)
+        else:
+            return Response({'error': 'No se encontraron registro de ubicaciones'},
+                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+class ListDataForLocationView(APIView):
+    def get(self, request, *args, **kwargs):
+        location = get_object_or_404(Location, id=kwargs['id'])
+        try:
+            data = location.lot.filter(indicted=False, location=location)
+            serializer = DataLocationSerializer(data, many=True)
+            return Response({'result': serializer.data}, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({'error': 'Ocurrió un error al obtener los datos'},
                             status=status.HTTP_500_INTERNAL_SERVER_ERROR)

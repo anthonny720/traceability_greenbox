@@ -1,12 +1,13 @@
 from django.contrib import admin
 from import_export.admin import ImportExportModelAdmin
+from simple_history.admin import SimpleHistoryAdmin
 
 from apps.raw_material.models import Lot, ILot
 
 
 # Register your models here.
 @admin.register(Lot)
-class LotAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+class LotAdmin(ImportExportModelAdmin, SimpleHistoryAdmin):
     list_display = (
         'lot',
         'downloadDate',
@@ -28,7 +29,7 @@ class LotAdmin(ImportExportModelAdmin, admin.ModelAdmin):
 
 
 @admin.register(ILot)
-class ILotAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+class ILotAdmin(ImportExportModelAdmin,SimpleHistoryAdmin):
     list_per_page = 20
     search_fields = ('lot__lot', )
     list_filter = ('lot__category', 'indicted',)
