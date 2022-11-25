@@ -60,6 +60,9 @@ months = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 
 
 class ReportView(APIView):
     def patch(self, request, *args, **kwargs):
+        # if request.user.role != "1":
+        #     return Response({'error': 'No tiene permisos para realizar esta acción'},
+        #                     status=status.HTTP_401_UNAUTHORIZED)
         report = get_object_or_404(Report, id=kwargs["id"])
         try:
             serializer = ReportSerializer(report, data=request.data, partial=True)

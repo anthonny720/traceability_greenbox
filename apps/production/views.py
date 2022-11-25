@@ -22,6 +22,9 @@ class ProcessPineappleList(APIView):
         return Response({'error': 'No se encontraron resultados'}, status=status.HTTP_404_NOT_FOUND)
 
     def post(self, request, format=None):
+        # if request.user.role != '7':
+        #     return Response({'error': 'No tiene permisos para realizar esta acción'},
+        #                     status=status.HTTP_401_UNAUTHORIZED)
         try:
             if ProcessPineapple.objects.filter(lot__lot=request.data['lot'], date=request.data['date']).exists():
                 return Response({'error': 'Se encontró un registró existente, verifique los datos ingresados.'},
@@ -42,6 +45,9 @@ class ProcessDetailPineappleList(APIView):
         return Response({'result': serializer.data}, status=status.HTTP_200_OK)
 
     def patch(self, request, *args, **kwargs):
+        # if request.user.role != '7':
+        #     return Response({'error': 'No tiene permisos para realizar esta acción'},
+        #                     status=status.HTTP_401_UNAUTHORIZED)
         process = get_object_or_404(ProcessPineapple, slug=kwargs['slug'])
 
         if process.status:
@@ -57,6 +63,9 @@ class ProcessDetailPineappleList(APIView):
                             status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def delete(self, request, *args, **kwargs):
+        # if request.user.role != '7':
+        #     return Response({'error': 'No tiene permisos para realizar esta acción'},
+        #                     status=status.HTTP_401_UNAUTHORIZED)
         process = get_object_or_404(ProcessPineapple, slug=kwargs['slug'])
 
         if process.status:
@@ -73,6 +82,9 @@ class ProcessDetailPineappleList(APIView):
 
 class CreateCrownView(APIView):
     def post(self, request, format=None):
+        # if request.user.role != '7':
+        #     return Response({'error': 'No tiene permisos para realizar esta acción'},
+        #                     status=status.HTTP_401_UNAUTHORIZED)
 
         process = get_object_or_404(ProcessPineapple, id=request.data['process'])
         if process.status:
@@ -90,6 +102,9 @@ class CreateCrownView(APIView):
 
 class DeleteCrownView(APIView):
     def delete(self, request, **kwargs):
+        # if request.user.role != '7':
+        #     return Response({'error': 'No tiene permisos para realizar esta acción'},
+        #                     status=status.HTTP_401_UNAUTHORIZED)
         crown_id = get_object_or_404(Crown, id=kwargs['id'])
         if crown_id.process.status:
             return Response({"error": "El registro ya esta bloqueado para su edición. Contáctese con el administrador"},
@@ -104,6 +119,9 @@ class DeleteCrownView(APIView):
 
 class CreatePeelView(APIView):
     def post(self, request, format=None):
+        # if request.user.role != '7':
+        #     return Response({'error': 'No tiene permisos para realizar esta acción'},
+        #                     status=status.HTTP_401_UNAUTHORIZED)
         process = get_object_or_404(ProcessPineapple, id=request.data['process'])
         if process.status:
             return Response({"error": "El registro ya esta bloqueado para su edición. Contáctese con el administrador"},
@@ -119,6 +137,9 @@ class CreatePeelView(APIView):
 
 class DeletePeelView(APIView):
     def delete(self, request, **kwargs):
+        # if request.user.role != '7':
+        #     return Response({'error': 'No tiene permisos para realizar esta acción'},
+        #                     status=status.HTTP_401_UNAUTHORIZED)
         peel_id = get_object_or_404(Peel, id=kwargs['id'])
 
         if peel_id.process.status:
@@ -134,6 +155,9 @@ class DeletePeelView(APIView):
 
 class GetReportView(APIView):
     def post(self, request, **kwargs):
+        # if request.user.role != '7':
+        #     return Response({'error': 'No tiene permisos para realizar esta acción'},
+        #                     status=status.HTTP_401_UNAUTHORIZED)
         try:
             category = request.data['category']
             date = request.data['date']

@@ -109,8 +109,7 @@ def custom_doc_file_path(instance, filename):
 
 
 class PackingList(models.Model):
-    reception = models.OneToOneField(Reception, on_delete=models.PROTECT, related_name='packing_list',
-                                     verbose_name='Recepción')
+    reception = models.OneToOneField(Reception, on_delete=models.PROTECT, related_name='packing_list',verbose_name='Recepción')
     status = models.BooleanField(default=False, verbose_name='Estado')
     date = models.DateField(verbose_name='Programa de despacho', blank=True, null=True)
     destine = models.CharField(max_length=50, verbose_name='Destino', blank=True, null=True)

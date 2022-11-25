@@ -4,11 +4,11 @@ import {Fragment} from 'react'
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faUserCircle} from "@fortawesome/free-solid-svg-icons";
 import {NavLink} from "react-router-dom";
+import {useSelector} from "react-redux";
 
 
 export default function PopoverMe({onClick}) {
-    // const user = useSelector(state => state.Auth.user);
-    const user={name:"Juan Perez",last_name:"Perez"}
+    const user = useSelector(state => state.Auth.user);
     const list = [
         {
             name: 'Cerrar Sesion',
@@ -31,7 +31,7 @@ export default function PopoverMe({onClick}) {
                 ${open ? '' : 'text-opacity-90'}
                 group inline-flex items-center p-2 rounded-md bg-[#26d07d] px-3 py-2 text-base font-medium text-white hover:text-opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75`}
                         >
-                            <FontAwesomeIcon  icon={faUserCircle}/>
+                            <FontAwesomeIcon icon={faUserCircle}/>
                             <ChevronDownIcon
                                 className={`${open ? '' : 'text-opacity-70'}
                   ml-2 h-5 w-5 text-white transition duration-150 ease-in-out group-hover:text-opacity-80`}
@@ -100,7 +100,8 @@ function IconTwo() {
 
 function IconOne() {
     return (
-        <svg xmlns="http://www.w3.org/2000/svg" width={48} stroke={"#26d07d"} fill={"#26d07d"} height={48} viewBox="0 0 512 512">
+        <svg xmlns="http://www.w3.org/2000/svg" width={48} stroke={"#26d07d"} fill={"#26d07d"} height={48}
+             viewBox="0 0 512 512">
             <path
                 d="M336 352c97.2 0 176-78.8 176-176S433.2 0 336 0S160 78.8 160 176c0 18.7 2.9 36.8 8.3 53.7L7 391c-4.5 4.5-7 10.6-7 17v80c0 13.3 10.7 24 24 24h80c13.3 0 24-10.7 24-24V448h40c13.3 0 24-10.7 24-24V384h40c6.4 0 12.5-2.5 17-7l33.3-33.3c16.9 5.4 35 8.3 53.7 8.3zm40-176c-22.1 0-40-17.9-40-40s17.9-40 40-40s40 17.9 40 40s-17.9 40-40 40z"/>
         </svg>

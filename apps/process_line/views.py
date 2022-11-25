@@ -133,6 +133,9 @@ class ListGeneralReleasedView(APIView):
 
 class DetailConditioningView(APIView):
     def patch(self, request, *args, **kwargs):
+        # if request.user.role != '5':
+        #     return Response({'error': 'No tiene permisos para realizar esta acción'},
+        #                     status=status.HTTP_401_UNAUTHORIZED)
         try:
             id = kwargs.get('id')
             qr = get_object_or_404(ProcessLineConditioning, id=id)
@@ -145,6 +148,9 @@ class DetailConditioningView(APIView):
                             status=status.HTTP_404_NOT_FOUND)
 
     def delete(self, request, *args, **kwargs):
+        # if request.user.role != '5':
+        #     return Response({'error': 'No tiene permisos para realizar esta acción'},
+        #                     status=status.HTTP_401_UNAUTHORIZED)
         try:
             id = kwargs.get('id')
             qr = get_object_or_404(ProcessLineConditioning, id=id)
@@ -156,6 +162,9 @@ class DetailConditioningView(APIView):
 
 class DetailTerminatedView(APIView):
     def patch(self, request, *args, **kwargs):
+        # if request.user.role != '5':
+        #     return Response({'error': 'No tiene permisos para realizar esta acción'},
+        #                     status=status.HTTP_401_UNAUTHORIZED)
         try:
             id = kwargs.get('id')
             qr = get_object_or_404(ProcessLineTerminated, id=id)
@@ -168,6 +177,9 @@ class DetailTerminatedView(APIView):
                             status=status.HTTP_404_NOT_FOUND)
 
     def delete(self, request, *args, **kwargs):
+        # if request.user.role != '5':
+        #     return Response({'error': 'No tiene permisos para realizar esta acción'},
+        #                     status=status.HTTP_401_UNAUTHORIZED)
         try:
             id = kwargs.get('id')
             qr = get_object_or_404(ProcessLineTerminated, id=id)
@@ -179,6 +191,9 @@ class DetailTerminatedView(APIView):
 
 class DetailReleasedView(APIView):
     def patch(self, request, *args, **kwargs):
+        # if request.user.role != '5':
+        #     return Response({'error': 'No tiene permisos para realizar esta acción'},
+        #                     status=status.HTTP_401_UNAUTHORIZED)
         try:
             id = kwargs.get('id')
             qr = get_object_or_404(ProcessLineReleased, id=id)
@@ -192,6 +207,9 @@ class DetailReleasedView(APIView):
                             status=status.HTTP_404_NOT_FOUND)
 
     def delete(self, request, *args, **kwargs):
+        # if request.user.role != '5':
+        #     return Response({'error': 'No tiene permisos para realizar esta acción'},
+        #                     status=status.HTTP_401_UNAUTHORIZED)
         try:
             id = kwargs.get('id')
             qr = get_object_or_404(ProcessLineReleased, id=id)
@@ -203,6 +221,9 @@ class DetailReleasedView(APIView):
 
 class CreateConditioningView(APIView):
     def post(self, request, *args, **kwargs):
+        # if request.user.role != '5':
+        #     return Response({'error': 'No tiene permisos para realizar esta acción'},
+        #                     status=status.HTTP_401_UNAUTHORIZED)
         try:
             serializer = ConditioningSerializer(data=request.data)
             serializer.is_valid(raise_exception=True)
@@ -217,6 +238,9 @@ class CreateConditioningView(APIView):
 
 class CreateTerminatedView(APIView):
     def post(self, request, *args, **kwargs):
+        # if request.user.role != '5':
+        #     return Response({'error': 'No tiene permisos para realizar esta acción'},
+        #                     status=status.HTTP_401_UNAUTHORIZED)
         try:
             serializer = TerminatedSerializer(data=request.data)
             serializer.is_valid(raise_exception=True)
@@ -229,6 +253,9 @@ class CreateTerminatedView(APIView):
 
 class CreateReleasedView(APIView):
     def post(self, request, *args, **kwargs):
+        # if request.user.role != '5':
+        #     return Response({'error': 'No tiene permisos para realizar esta acción'},
+        #                     status=status.HTTP_401_UNAUTHORIZED)
         try:
             serializer = ReleasedSerializer(data=request.data)
             serializer.is_valid(raise_exception=True)

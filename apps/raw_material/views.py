@@ -22,6 +22,9 @@ class ListCreateLotView(APIView):
                             status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def post(self, request, format=None):
+        # if request.user.role != "6":
+        #     return Response({'error': 'No tiene permisos para realizar esta acción'},
+        #                     status=status.HTTP_401_UNAUTHORIZED)
         try:
             serializer = LotSerializer(data=request.data)
             serializer.is_valid(raise_exception=True)
@@ -54,6 +57,9 @@ class DetailEntryView(APIView):
 
     def delete(self, request, *args, **kwargs):
         entry = get_object_or_404(Lot, lot=kwargs['lot'])
+        # if not request.user.is_superuser:
+        #     return Response({'error': 'No tiene permisos para realizar esta acción'},
+        #                     status=status.HTTP_401_UNAUTHORIZED)
         if entry.closed:
             return Response({"error": "El lote ya esta bloqueado para su edición. Contáctese con el administrador"},
                             status=status.HTTP_500_INTERNAL_SERVER_ERROR)
@@ -78,6 +84,9 @@ class ListILotView(APIView):
 
 class CreateInformationView(APIView):
     def post(self, request, format=None):
+        # if request.user.role != "6":
+        #     return Response({'error': 'No tiene permisos para realizar esta acción'},
+        #                     status=status.HTTP_401_UNAUTHORIZED)
         data = request.data
         try:
             if Lot.objects.get(id=data.get("lot")).closed:
@@ -99,13 +108,12 @@ class CreateInformationView(APIView):
 class DetailInformationView(APIView):
     def patch(self, request, *args, **kwargs):
         inf = get_object_or_404(ILot, id=kwargs['id'])
-        try:
-            if Lot.objects.get(lot=inf.lot).closed:
-                return Response({"error": "El lote ya esta bloqueado para su edición. Contáctese con el administrador"},
-                                status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-        except:
-            return Response({"error": "Ocurrió un problema interno. Contáctese con el administrador"},
+        if inf.lot.closed:
+            return Response({"error": "El lote ya esta bloqueado para su edición. Contáctese con el administrador"},
                             status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        # if request.user.role != "6":
+        #     return Response({'error': 'No tiene permisos para realizar esta acción'},
+        #                     status=status.HTTP_401_UNAUTHORIZED)
         try:
             if not request.data.get("indicted"):
                 request.data["indicted"] = False
@@ -117,22 +125,18 @@ class DetailInformationView(APIView):
             serializer.save()
             return Response({'message': 'Item actualizado correctamente'}, status=status.HTTP_200_OK)
         except Exception as e:
-            return Response({"error": 'Ocurrió un error al actualizar el item','detail':str(e)}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"error": 'Ocurrió un error al actualizar el item', 'detail': str(e)},
+                            status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, *args, **kwargs):
+        inf = get_object_or_404(ILot, id=kwargs['id'])
+        if inf.lot.closed:
+            return Response({"error": "El lote ya esta bloqueado para su edición. Contáctese con el administrador"},
+                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         # if not request.user.is_superuser:
         #     return Response({'error': 'No tiene permisos para realizar esta acción'},
         #                     status=status.HTTP_401_UNAUTHORIZED)
         try:
-            inf = get_object_or_404(ILot, id=kwargs['id'])
-            try:
-                if Lot.objects.get(lot=inf.lot).closed:
-                    return Response(
-                        {"error": "El lote ya esta bloqueado para su edición. Contáctese con el administrador"},
-                        status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-            except:
-                return Response({"error": "Ocurrió un problema interno. Contáctese con el administrador"},
-                                status=status.HTTP_500_INTERNAL_SERVER_ERROR)
             inf.delete()
             return Response({"message": "Item eliminado correctamente"}, status=status.HTTP_200_OK)
         except:

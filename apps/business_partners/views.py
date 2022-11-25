@@ -37,6 +37,9 @@ class ListContactView(APIView):
 
 class AddContactView(APIView):
     def post(self, request):
+        # if not request.user.is_superuser:
+        #     return Response({'error': 'No tiene permisos para realizar esta acción'},
+        #                     status=status.HTTP_401_UNAUTHORIZED)
         try:
             serializer = ContactSerializer(data=request.data)
             serializer.is_valid(raise_exception=True)
@@ -49,6 +52,9 @@ class AddContactView(APIView):
 
 class UpdateContactView(APIView):
     def patch(self, request, *args, **kwargs):
+        # if not request.user.is_superuser:
+        #     return Response({'error': 'No tiene permisos para realizar esta acción'},
+        #                     status=status.HTTP_401_UNAUTHORIZED)
         data = request.data
         try:
             contact = get_object_or_404(Contact, id=kwargs['id'])
@@ -63,6 +69,9 @@ class UpdateContactView(APIView):
 
 class DeleteContactView(APIView):
     def delete(self, request, *args, **kwargs):
+        # if not request.user.is_superuser:
+        #     return Response({'error': 'No tiene permisos para realizar esta acción'},
+        #                     status=status.HTTP_401_UNAUTHORIZED)
         try:
             contact_id = int(kwargs['id'])
         except:
@@ -153,6 +162,9 @@ class ListCarrierView(APIView):
 
 class AddCarrierView(APIView):
     def post(self, request):
+        # if not request.user.is_superuser:
+        #     return Response({'error': 'No tiene permisos para realizar esta acción'},
+        #                     status=status.HTTP_401_UNAUTHORIZED)
         try:
             serializer = CarrierSerializer(data=request.data)
             serializer.is_valid(raise_exception=True)
@@ -165,6 +177,9 @@ class AddCarrierView(APIView):
 
 class UpdateCarrierView(APIView):
     def patch(self, request, *args, **kwargs):
+        # if not request.user.is_superuser:
+        #     return Response({'error': 'No tiene permisos para realizar esta acción'},
+        #                     status=status.HTTP_401_UNAUTHORIZED)
         data = request.data
         try:
             carrier = get_object_or_404(Carrier, id=kwargs['id'])
@@ -179,10 +194,14 @@ class UpdateCarrierView(APIView):
 
 class DeleteCarrierView(APIView):
     def delete(self, request, *args, **kwargs):
+        # if not request.user.is_superuser:
+        #     return Response({'error': 'No tiene permisos para realizar esta acción'},
+        #                     status=status.HTTP_401_UNAUTHORIZED)
         try:
             contact_id = int(kwargs['id'])
         except:
-            return Response({'error': 'El ID del trasporte debe ser un número entero'}, status=status.HTTP_404_NOT_FOUND)
+            return Response({'error': 'El ID del trasporte debe ser un número entero'},
+                            status=status.HTTP_404_NOT_FOUND)
         try:
             contact = Carrier.objects.get(id=contact_id)
             contact.delete()

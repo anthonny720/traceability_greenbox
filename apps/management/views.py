@@ -43,6 +43,9 @@ class ListKardexView(APIView):
 
 class CreateKardexView(APIView):
     def post(self, request, format=None):
+        # if request.user.role != '6':
+        #     return Response({'error': 'No tiene permisos para realizar esta acción'},
+        #                     status=status.HTTP_401_UNAUTHORIZED)
         try:
             category = int(request.data.get('category'))
             category = Fruits.objects.get(id=category)
@@ -86,6 +89,9 @@ class ListMotionView(APIView):
 
 class AddMotionView(APIView):
     def post(self, request, format=None):
+        # if request.user.role != '6':
+        #     return Response({'error': 'No tiene permisos para realizar esta acción'},
+        #                     status=status.HTTP_401_UNAUTHORIZED)
         try:
             remitter = int(self.request.data['to'])
             receiver = int(self.request.data['fr'])
@@ -121,6 +127,9 @@ class AddMotionView(APIView):
 
 class DeleteMotionView(APIView):
     def delete(self, request, id, format=None):
+        # if request.user.role != '6':
+        #     return Response({'error': 'No tiene permisos para realizar esta acción'},
+        #                     status=status.HTTP_401_UNAUTHORIZED)
         motion = get_object_or_404(Motion, id=id)
         try:
             id = motion.id
@@ -139,6 +148,7 @@ class DeleteMotionView(APIView):
 
 class ListPaymentsView(APIView):
     def get(self, request, format=None):
+
         try:
             if Payments.objects.all().exists():
                 result = [{'id': pay.id, 'name': pay.name, 'business_name': pay.business_name,
@@ -155,6 +165,9 @@ class ListPaymentsView(APIView):
                             status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def post(self, request, format=None):
+        # if not request.user.is_superuser:
+        #     return Response({'error': 'No tiene permisos para realizar esta acción'},
+        #                     status=status.HTTP_401_UNAUTHORIZED)
         data = request.data
         if Payments.objects.filter(report=Lot.objects.get(id=data['report'])).exists():
             return Response({'error': 'El registro para este informe ya existe.'}, status=status.HTTP_400_BAD_REQUEST)
@@ -171,6 +184,9 @@ class ListPaymentsView(APIView):
 class DetailPaymentView(APIView):
 
     def patch(self, request, *args, **kwargs):
+        # if not request.user.is_superuser:
+        #     return Response({'error': 'No tiene permisos para realizar esta acción'},
+        #                     status=status.HTTP_401_UNAUTHORIZED)
         inf = get_object_or_404(Payments, id=kwargs['id'])
         try:
             serializer = PaymentSerializer(inf, data=request.data, partial=True)
@@ -182,6 +198,9 @@ class DetailPaymentView(APIView):
                             status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def delete(self, request, *args, **kwargs):
+        # if not request.user.is_superuser:
+        #     return Response({'error': 'No tiene permisos para realizar esta acción'},
+        #                     status=status.HTTP_401_UNAUTHORIZED)
         try:
             inf = get_object_or_404(Payments, id=kwargs['id'])
             inf.delete()

@@ -22,6 +22,9 @@ class ListCutTestView(APIView):
 
 class DetailCutTestView(APIView):
     def patch(self, request, *args, **kwargs):
+        if request.user.role != '5':
+            return Response({'error': 'No tiene permisos para realizar esta acción'},
+                            status=status.HTTP_401_UNAUTHORIZED)
         if request.user.role != "Calidad_Editor":
             return Response({'error': 'No tiene permisos para realizar esta acción'},
                             status=status.HTTP_401_UNAUTHORIZED)
@@ -91,6 +94,9 @@ class ListAnalysisBlueberryView(APIView):
 
 class DetailAnalysisPineappleView(APIView):
     def patch(self, request, *args, **kwargs):
+        if request.user.role != '5':
+            return Response({'error': 'No tiene permisos para realizar esta acción'},
+                            status=status.HTTP_401_UNAUTHORIZED)
         try:
             obj = get_object_or_404(AnalysisPineapple, id=kwargs['id'])
             serializer = AnalysisPineappleSerializer(obj, data=request.data, partial=True)
@@ -104,6 +110,9 @@ class DetailAnalysisPineappleView(APIView):
 
 class DetailAnalysisMangoView(APIView):
     def patch(self, request, *args, **kwargs):
+        if request.user.role != '5':
+            return Response({'error': 'No tiene permisos para realizar esta acción'},
+                            status=status.HTTP_401_UNAUTHORIZED)
         try:
             obj = get_object_or_404(AnalysisMango, id=kwargs['id'])
             serializer = AnalysisMangoSerializer(obj, data=request.data, partial=True)
@@ -117,6 +126,9 @@ class DetailAnalysisMangoView(APIView):
 
 class DetailAnalysisAguaymantoView(APIView):
     def patch(self, request, *args, **kwargs):
+        if request.user.role != '5':
+            return Response({'error': 'No tiene permisos para realizar esta acción'},
+                            status=status.HTTP_401_UNAUTHORIZED)
         try:
             obj = get_object_or_404(AnalysisAguaymanto, id=kwargs['id'])
             serializer = AnalysisAguaymantoSerializer(obj, data=request.data, partial=True)
@@ -130,6 +142,9 @@ class DetailAnalysisAguaymantoView(APIView):
 
 class DetailAnalysisBananoView(APIView):
     def patch(self, request, *args, **kwargs):
+        if request.user.role != '5':
+            return Response({'error': 'No tiene permisos para realizar esta acción'},
+                            status=status.HTTP_401_UNAUTHORIZED)
         try:
             obj = get_object_or_404(AnalysisBanano, id=kwargs['id'])
             serializer = AnalysisBananoSerializer(obj, data=request.data, partial=True)
@@ -143,6 +158,9 @@ class DetailAnalysisBananoView(APIView):
 
 class DetailAnalysisBlueberryView(APIView):
     def patch(self, request, *args, **kwargs):
+        if request.user.role != '5':
+            return Response({'error': 'No tiene permisos para realizar esta acción'},
+                            status=status.HTTP_401_UNAUTHORIZED)
         try:
             obj = get_object_or_404(AnalysisBlueberry, id=kwargs['id'])
             serializer = AnalysisBlueberrySerializer(obj, data=request.data, partial=True)

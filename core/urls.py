@@ -5,8 +5,8 @@ from django.views.generic import TemplateView
 
 from core import settings
 
-urlpatterns = [path('admin/', admin.site.urls), path('auth/', include('djoser.urls')),
-               path('auth/', include('djoser.urls.jwt')), path('api/products/', include('apps.products.urls')),
+urlpatterns = [path('admin/', admin.site.urls),
+               path('api/products/', include('apps.products.urls')),
                path('api/management/', include('apps.management.urls')),
                path('api/business-partners/', include('apps.business_partners.urls')),
                path('api/raw-material/', include('apps.raw_material.urls')),
@@ -15,6 +15,9 @@ urlpatterns = [path('admin/', admin.site.urls), path('auth/', include('djoser.ur
                path('api/production/', include('apps.production.urls')),
                path('api/report/', include('apps.report.urls')),
                path('api/logistic/', include('apps.warehouse.urls')),
+               path('auth/', include('djoser.urls')),
+               path('auth/', include('djoser.urls.jwt')),
+
                ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
