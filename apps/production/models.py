@@ -1,6 +1,7 @@
 from django.db import models
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
+from simple_history.models import HistoricalRecords
 
 from apps.products.models import Pallets
 from apps.raw_material.models import Lot
@@ -10,7 +11,7 @@ class ProcessPineapple(models.Model):
     """Model definition for ProcessPineapple."""
     date = models.DateField(blank=False, null=False, verbose_name='Fecha de Proceso')
     slug = models.SlugField(max_length=100, unique=True, blank=True, null=True)
-    lot = models.ForeignKey(Lot, on_delete=models.CASCADE, verbose_name='Lote', related_name='process_pineapple')
+    lot = models.ForeignKey(Lot, on_delete=models.PROTECT, verbose_name='Lote', related_name='process_pineapple')
     juice = models.DecimalField(blank=True, null=True, max_digits=4, decimal_places=1, verbose_name='Jugo', default=0)
     discard = models.DecimalField(blank=True, null=True, max_digits=4, decimal_places=1, verbose_name='Descarte',
                                   default=0)
@@ -29,6 +30,7 @@ class ProcessPineapple(models.Model):
                                       verbose_name='Kg sin pelar', default=0)
     cars = models.PositiveSmallIntegerField(blank=True, null=True, verbose_name='Cantidad de Coches', default=1)
     status = models.BooleanField(default=False, verbose_name="Cerrado/Abierto")
+    history = HistoricalRecords()
 
     class Meta:
         """Meta definition for ProcessPineapple."""
@@ -74,7 +76,7 @@ class ProcessPineapple(models.Model):
                 total += d.get_net_weight()
             percentage = total / self.get_kg_mp() * 100
             return {'kg': total, 'percentage': percentage}
-        except:
+        except Exception as e:
             return {'kg': 0, 'percentage': 0}
 
     def get_total_peel(self):
@@ -121,11 +123,12 @@ def my_callback(sender, instance, *args, **kwargs):
 
 
 class Crown(models.Model):
-    process = models.ForeignKey(ProcessPineapple, on_delete=models.CASCADE, blank=False, null=False,
+    process = models.ForeignKey(ProcessPineapple, on_delete=models.PROTECT, blank=False, null=False,
                                 related_name='crown',
                                 verbose_name='Proceso')
     weight = models.FloatField(blank=False, null=False, verbose_name='Peso')
-    pallet = models.ForeignKey(Pallets, on_delete=models.CASCADE, blank=False, null=False, verbose_name='Pallet')
+    pallet = models.ForeignKey(Pallets, on_delete=models.PROTECT, blank=False, null=False, verbose_name='Pallet')
+    history = HistoricalRecords()
 
     def __str__(self):
         return str(self.weight)
@@ -146,12 +149,13 @@ class Crown(models.Model):
 
 
 class Peel(models.Model):
-    process = models.ForeignKey(ProcessPineapple, on_delete=models.CASCADE, blank=False, null=False,
+    process = models.ForeignKey(ProcessPineapple, on_delete=models.PROTECT, blank=False, null=False,
                                 related_name='peel',
                                 verbose_name='Proceso', )
     weight = models.DecimalField(blank=False, null=False, verbose_name='Peso', max_digits=4, decimal_places=1)
-    pallet = models.ForeignKey(Pallets, on_delete=models.CASCADE, blank=False, null=False, verbose_name='Pallet')
+    pallet = models.ForeignKey(Pallets, on_delete=models.PROTECT, blank=False, null=False, verbose_name='Pallet')
     quantity = models.PositiveSmallIntegerField(verbose_name='Cantidad', default=0)
+    history = HistoricalRecords()
 
     def __str__(self):
         return str(self.weight)
@@ -181,4 +185,3 @@ class Peel(models.Model):
 
     def get_pallet_name(self):
         return self.pallet.name
-

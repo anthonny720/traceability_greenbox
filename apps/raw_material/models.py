@@ -5,8 +5,9 @@ from decimal import Decimal
 from django.db import models
 from django.db.models.signals import post_delete, pre_save
 from django.dispatch import receiver
+from simple_history.models import HistoricalRecords
 
-from apps.business_partners.models import ProviderMP
+from apps.business_partners.models import ProviderMP, Contact, Carrier
 from apps.products.models import Fruits, Pallets, Boxes
 
 
@@ -19,7 +20,7 @@ def custom_doc_file_path(instance, filename):
 # Create your models here.
 
 class Lot(models.Model):
-    provider = models.ForeignKey(ProviderMP, on_delete=models.CASCADE, related_name="provider_entry",
+    provider = models.ForeignKey(ProviderMP, on_delete=models.PROTECT, related_name="provider_entry",
                                  verbose_name="Proveedor")
     origin = models.CharField(max_length=100, verbose_name="Origen")
     parcel = models.CharField(max_length=100, blank=True, null=True, default="No Parcel", verbose_name="Parcela")
@@ -39,13 +40,18 @@ class Lot(models.Model):
     lot = models.CharField(max_length=13, unique=True, verbose_name="Lote")
     quality = models.DecimalField(decimal_places=1, max_digits=3, default=0, blank=True, null=True,
                                   verbose_name="Muestra de Calidad")
-    category = models.ForeignKey(Fruits, on_delete=models.CASCADE, related_name="fruit_entry",
+    category = models.ForeignKey(Fruits, on_delete=models.PROTECT, related_name="fruit_entry",
                                  verbose_name="Categoria")
     description = models.CharField(max_length=500, blank=True, null=True, verbose_name="Descripcion")
     certified = models.CharField(max_length=500, blank=True, null=True, verbose_name="Certificado")
-    discount_percentage = models.DecimalField(decimal_places=5, max_digits=8, default=0, blank=True, null=True,
+    discount_percentage = models.DecimalField(decimal_places=10, max_digits=15, default=0, blank=True, null=True,
                                               verbose_name="Porcentaje de Descuento")
+    driver = models.ForeignKey(Contact, on_delete=models.PROTECT, related_name="driver_entry", verbose_name="Conductor",
+                               blank=True, null=True)
+    carrier = models.ForeignKey(Carrier, on_delete=models.PROTECT, related_name="carrier_entry",
+                                verbose_name="Empresa de transporte", blank=True, null=True)
     closed = models.BooleanField(default=False, verbose_name="Cerrado/Abierto")
+    history = HistoricalRecords()
 
     class Meta:
         verbose_name = "Lote"
@@ -54,6 +60,43 @@ class Lot(models.Model):
 
     def __str__(self):
         return self.lot
+
+    def get_driver(self):
+        if self.driver:
+            return self.driver.name
+        return ''
+
+    def get_carrier(self):
+        if self.carrier:
+            return self.carrier.name
+        return ''
+
+    def get_carrier_code(self):
+        if self.carrier:
+            return self.carrier.code
+        return ''
+
+    def get_calibers_percentage(self):
+        c = {"c6": 0, "c8": 0, "c10": 0, "c12": 0, "c14": 0}
+        try:
+            total = self.get_c()
+            c["c6"] = (float(total["c6"]) / float(self.get_quantity_boxes())) * 100
+            c["c8"] = (float(total["c8"]) / float(self.get_quantity_boxes())) * 100
+            c["c10"] = (float(total["c10"]) / float(self.get_quantity_boxes())) * 100
+            c["c12"] = (float(total["c12"]) / float(self.get_quantity_boxes())) * 100
+            c["c14"] = (float(total["c14"]) / float(self.get_quantity_boxes())) * 100
+            return c
+        except:
+            return c
+
+    def get_weight_pallets(self):
+        t = 0
+        try:
+            for count in self.data.all():
+                t += count.get_weight_pallet()
+            return t
+        except:
+            return t
 
     def get_year(self):
         try:
@@ -272,7 +315,7 @@ class ILot(models.Model):
     t2 = models.IntegerField(default=0, verbose_name="Tibana 2")
     gn = models.IntegerField(default=0, verbose_name="Gandules")
     ma = models.IntegerField(default=0, verbose_name="Madera")
-    pallet = models.ForeignKey(Pallets, on_delete=models.CASCADE, verbose_name="Pallet", related_name="pallet")
+    pallet = models.ForeignKey(Pallets, on_delete=models.PROTECT, verbose_name="Pallet", related_name="pallet")
     tare = models.FloatField(default=0, verbose_name="Tara")
     c6 = models.IntegerField(default=0, verbose_name="Calibre 6")
     c8 = models.IntegerField(default=0, verbose_name="Calibre 8")
@@ -281,7 +324,11 @@ class ILot(models.Model):
     c14 = models.IntegerField(default=0, verbose_name="Calibre 14")
     dateIndicted = models.DateField(blank=True, null=True, verbose_name="Fecha de procesado")
     indicted = models.BooleanField(default=False, verbose_name="Procesado")
-    lot = models.ForeignKey(Lot, on_delete=models.CASCADE, related_name="data", verbose_name="Lote")
+    lot = models.ForeignKey(Lot, on_delete=models.PROTECT, related_name="data", verbose_name="Lote")
+    location = models.ForeignKey(to='management.Location', on_delete=models.PROTECT, verbose_name="Ubicacion",
+                                 related_name="lot",
+                                 blank=True, null=True)
+    history = HistoricalRecords()
 
     class Meta:
         verbose_name = 'Informacion de Lotes'
@@ -346,6 +393,12 @@ class ILot(models.Model):
                 return self.get_net_final_weight()
         except:
             return 0
+
+    def get_indicted(self):
+        if self.indicted:
+            return "✔"
+        else:
+            return "✘"
 
 
 @receiver(pre_save, sender=ILot)

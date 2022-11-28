@@ -9,22 +9,36 @@ import React, {useState} from 'react'
 import {useDispatch} from "react-redux";
 import {map} from 'lodash'
 import Dropdown from "./Dropdown";
+import {logout} from "../../redux/actions/auth";
 
 const list = {
     'Producción': [{name: 'Procesos', href: '/production/'},],
     'Calidad': [{name: 'Prueba de corte', href: '/quality/cut-test/'}, {
-        name: 'Análisis', href: '/quality/analysis/'
+        name: 'Piña',
+        href: '/quality/analysis/pineapple'
+    }, {name: 'Mango', href: '/quality/analysis/mango'}, {
+        name: 'Aguaymanto',
+        href: '/quality/analysis/aguaymanto'
+    }, {name: 'Banano', href: '/quality/analysis/banano'}, {
+        name: 'Arándanos',
+        href: '/quality/analysis/blueberry'
     }, {name: 'Acondicionado', href: '/quality/conditioning/'}, {
         name: 'Envasado', href: '/quality/terminated/'
     }, {name: 'Liberación', href: '/quality/released'}],
-    'Gestión': [{name: 'Control de jabas', href: '/boxes/'}, {
-        name: 'Kardex', href: '/kardex/'
-    }, {name: 'Pago de estiba', href: '/payments/'},],
+    'Logística': [{name: 'Recepción', href: '/logistic/reception'}, {
+        name: 'PackingList', href: '/logistic/packing-list'
+    }],
+    'Gestión': [{name: 'Cámaras', href: '/management/cameras'}, {
+        name: 'Control de jabas', href: '/management/motions'
+    }, {
+        name: 'Kardex', href: '/management/kardex'
+    }, {name: 'Pago de estiba', href: '/management/payments'},],
     'Socios de Negocios': [{name: 'Conductores', href: '/business-partners/driver/'}, {
         name: 'Clientes', href: '/business-partners/clients/'
-    }, {name: 'Proveedores', href: '/business-partners/providers/'},],
-    'Configuración': [{name: 'Usuarios', href: '/users/'}, {name: 'Historial', href: '/history/'}],
-
+    }, {name: 'Proveedores', href: '/business-partners/providers/'}, {
+        name: 'Transportes', href: '/business-partners/carrier/'
+    },],
+    'Configuración': [{name: 'Usuarios', href: '/users/'},],
 }
 
 const social = [{
@@ -38,16 +52,18 @@ function classNames(...classes) {
 export default function Navbar() {
 
     const [redirect, setRedirect] = useState(false);
-
     const dispatch = useDispatch()
 
     const logoutHandler = () => {
+        dispatch(logout())
         setRedirect(true);
     }
     if (redirect) {
         window.location.reload(false)
         return <Navigate to='/'/>;
     }
+
+
     return (<>
 
         <Helmet>

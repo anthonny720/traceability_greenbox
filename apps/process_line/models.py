@@ -4,6 +4,7 @@ from django.db import models
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
 from django.utils.timezone import now
+from simple_history.models import HistoricalRecords
 
 from apps.business_partners.models import Client
 from apps.products.models import PackingProduct
@@ -13,6 +14,7 @@ from apps.raw_material.models import Lot
 class TypesCut(models.Model):
     name = models.CharField(max_length=100, verbose_name='Nombre')
     code = models.CharField(verbose_name='Codigo referencial', max_length=3, unique=True)
+    history = HistoricalRecords()
 
     def __str__(self):
         return self.name
@@ -24,7 +26,7 @@ class TypesCut(models.Model):
 
 class ProcessLineConditioning(models.Model):
     process_date = models.DateField(verbose_name='Fecha de Proceso', default=now)
-    lot = models.ForeignKey(Lot, on_delete=models.CASCADE, related_name='conditioning',
+    lot = models.ForeignKey(Lot, on_delete=models.PROTECT, related_name='conditioning',
                             verbose_name='Lote Materia Prima')
     chlorine = models.IntegerField(verbose_name='Cloro en red', default=0)
     disinfection = models.IntegerField(verbose_name='Linea de desinfección', default=0)
@@ -61,6 +63,7 @@ class ProcessLineConditioning(models.Model):
     h22 = models.IntegerField(verbose_name='22va Hora', default=0)
     h23 = models.IntegerField(verbose_name='23va Hora', default=0)
     h24 = models.IntegerField(verbose_name='24va Hora', default=0)
+    history = HistoricalRecords()
 
     class Meta:
         unique_together = ('process_date', 'lot',)
@@ -95,9 +98,9 @@ class ProcessLineConditioning(models.Model):
 
 class ProcessLineTerminated(models.Model):
     packing_date = models.DateField(verbose_name='Fecha de Envasado', default=now)
-    type_cut = models.ForeignKey(TypesCut, on_delete=models.CASCADE, related_name='type_cut')
+    type_cut = models.ForeignKey(TypesCut, on_delete=models.PROTECT, related_name='type_cut')
     lot = models.CharField(max_length=100, verbose_name='Lote Producto Terminado', blank=True, null=True)
-    process = models.ForeignKey(ProcessLineConditioning, on_delete=models.CASCADE, related_name='process_line',
+    process = models.ForeignKey(ProcessLineConditioning, on_delete=models.PROTECT, related_name='process_line',
                                 verbose_name='Proceso de Acondicionado')
     brix_pt = models.DecimalField(max_digits=5, decimal_places=2, verbose_name='°Brix', blank=True, null=True,
                                   default=0)
@@ -114,6 +117,7 @@ class ProcessLineTerminated(models.Model):
     width_pt = models.DecimalField(max_digits=5, decimal_places=2, verbose_name='Espesor(mm)',
                                    blank=True, null=True, default=0)
     quantity = models.IntegerField(verbose_name='Cantidad producida', blank=True, null=True, default=0)
+    history = HistoricalRecords()
 
     class Meta:
         verbose_name = 'Proceso de Envasado'
@@ -154,18 +158,19 @@ class ProcessLineTerminated(models.Model):
 
 class ProcessLineReleased(models.Model):
     release_date = models.DateField(verbose_name='Fecha de Liberación', default=now)
-    process = models.ForeignKey(ProcessLineTerminated, on_delete=models.CASCADE, related_name='process_line_released',
+    process = models.ForeignKey(ProcessLineTerminated, on_delete=models.PROTECT, related_name='process_line_released',
                                 verbose_name='Proceso Terminado')
     quantity = models.IntegerField(verbose_name='Cantidad liberada', blank=True, null=True, default=0)
-    client = models.ForeignKey(Client, on_delete=models.CASCADE, related_name='client_released', verbose_name='Cliente')
-    expiration_date = models.DateField(verbose_name='Fecha de Vencimiento')
-    lot_bags = models.ForeignKey(PackingProduct, on_delete=models.CASCADE, related_name='lot_bags_released',
+    client = models.ForeignKey(Client, on_delete=models.PROTECT, related_name='client_released', verbose_name='Cliente')
+    expiration_date = models.DateField(verbose_name='Fecha de Vencimiento', blank=True, null=True)
+    lot_bags = models.ForeignKey(PackingProduct, on_delete=models.PROTECT, related_name='lot_bags_released',
                                  verbose_name='Lote de Bolsas', blank=True, null=True)
-    lot_boxes = models.ForeignKey(PackingProduct, on_delete=models.CASCADE, related_name='lot_boxes_released',
+    lot_boxes = models.ForeignKey(PackingProduct, on_delete=models.PROTECT, related_name='lot_boxes_released',
                                   verbose_name='Lote de Cajas', blank=True, null=True)
     observations = models.CharField(
         choices=(('1', 'Producto apto'), ('2', 'Producto en transición'), ('3', 'Producto no conforme'),),
         max_length=100, verbose_name='Observaciones', default='1', blank=True, null=True)
+    history = HistoricalRecords()
 
     class Meta:
         verbose_name = 'Proceso de  Liberación'
@@ -180,6 +185,7 @@ class ProcessLineReleased(models.Model):
 
     def get_description(self):
         return self.process.type_cut.name
+
     def get_summary(self):
         return str(self.release_date) + ' - ' + str(self.process.lot) + ' - ' + str(self.client) + ' - ' + str(
             self.quantity) + " und"

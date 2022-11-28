@@ -1,12 +1,13 @@
 from django.contrib import admin
 from import_export.admin import ImportExportModelAdmin
+from simple_history.admin import SimpleHistoryAdmin
 
 from apps.quality.models import (AnalysisPineapple, AnalysisMango, AnalysisBanano, AnalysisAguaymanto,
-    AnalysisBlueberry, CutTest,)
+                                 AnalysisBlueberry, CutTest, )
 
 
 @admin.register(AnalysisPineapple)
-class AnalysisPineappleAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+class AnalysisPineappleAdmin(ImportExportModelAdmin, SimpleHistoryAdmin):
     list_display = ('lot',)
     search_fields = ('lot__lot',)
     list_filter = ('lot__provider__name',)
@@ -14,7 +15,7 @@ class AnalysisPineappleAdmin(ImportExportModelAdmin, admin.ModelAdmin):
 
 
 @admin.register(AnalysisMango)
-class AnalysisMangoAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+class AnalysisMangoAdmin(ImportExportModelAdmin, SimpleHistoryAdmin):
     list_display = ('lot',)
     search_fields = ('lot__lot',)
     list_filter = ('lot__provider__name',)
@@ -22,7 +23,7 @@ class AnalysisMangoAdmin(ImportExportModelAdmin, admin.ModelAdmin):
 
 
 @admin.register(AnalysisBanano)
-class AnalysisBananoAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+class AnalysisBananoAdmin(ImportExportModelAdmin, SimpleHistoryAdmin):
     list_display = ('lot',)
     search_fields = ('lot__lot',)
     list_filter = ('lot__provider__name',)
@@ -30,7 +31,7 @@ class AnalysisBananoAdmin(ImportExportModelAdmin, admin.ModelAdmin):
 
 
 @admin.register(AnalysisAguaymanto)
-class AnalysisAguaymantoAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+class AnalysisAguaymantoAdmin(ImportExportModelAdmin, SimpleHistoryAdmin):
     list_display = ('lot',)
     search_fields = ('lot__lot',)
     list_filter = ('lot__provider__name',)
@@ -38,7 +39,7 @@ class AnalysisAguaymantoAdmin(ImportExportModelAdmin, admin.ModelAdmin):
 
 
 @admin.register(AnalysisBlueberry)
-class AnalysisBlueberryAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+class AnalysisBlueberryAdmin(ImportExportModelAdmin, SimpleHistoryAdmin):
     list_display = ('lot',)
     search_fields = ('lot__lot',)
     list_filter = ('lot__provider__name',)
@@ -46,9 +47,8 @@ class AnalysisBlueberryAdmin(ImportExportModelAdmin, admin.ModelAdmin):
 
 
 @admin.register(CutTest)
-class CutTestAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+class CutTestAdmin(ImportExportModelAdmin, SimpleHistoryAdmin):
     list_display = ('lot', 'cut_fresh_1_8', 'cut_1_8', 'eyes',)
     search_fields = ('lot__lot',)
     list_filter = ('lot__provider__name',)
     list_per_page = 20
-
