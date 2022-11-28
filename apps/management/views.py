@@ -9,6 +9,7 @@ from apps.management.serializers import PaymentSerializer, LocationSerializer
 from apps.products.models import Fruits
 from apps.raw_material.models import Lot
 from apps.raw_material.serializers import DataLocationSerializer
+from apps.util.pagination import SetPagination
 
 
 class ListKardexView(APIView):
@@ -43,9 +44,9 @@ class ListKardexView(APIView):
 
 class CreateKardexView(APIView):
     def post(self, request, format=None):
-        # if request.user.role != '6':
-        #     return Response({'error': 'No tiene permisos para realizar esta acción'},
-        #                     status=status.HTTP_401_UNAUTHORIZED)
+        if request.user.role != '6':
+            return Response({'error': 'No tiene permisos para realizar esta acción'},
+                            status=status.HTTP_401_UNAUTHORIZED)
         try:
             category = int(request.data.get('category'))
             category = Fruits.objects.get(id=category)
@@ -82,16 +83,18 @@ class ListMotionView(APIView):
             result = [
                 {'id': motion.id, 'date': motion.date, 'remitter': motion.to.name, 'receiver': motion.fr.name,
                  'quantity': motion.quantity} for motion in Motion.objects.all().order_by('-id')]
-            return Response({'motions': result}, status=status.HTTP_200_OK)
+            paginator = SetPagination()
+            result_page = paginator.paginate_queryset(result, request)
+            return paginator.get_paginated_response(result_page)
         else:
             return Response({'error': 'No se encontraron registros'}, status=status.HTTP_404_NOT_FOUND)
 
 
 class AddMotionView(APIView):
     def post(self, request, format=None):
-        # if request.user.role != '6':
-        #     return Response({'error': 'No tiene permisos para realizar esta acción'},
-        #                     status=status.HTTP_401_UNAUTHORIZED)
+        if request.user.role != '6' and request.user.role != '2':
+            return Response({'error': 'No tiene permisos para realizar esta acción'},
+                            status=status.HTTP_401_UNAUTHORIZED)
         try:
             remitter = int(self.request.data['to'])
             receiver = int(self.request.data['fr'])
@@ -127,9 +130,9 @@ class AddMotionView(APIView):
 
 class DeleteMotionView(APIView):
     def delete(self, request, id, format=None):
-        # if request.user.role != '6':
-        #     return Response({'error': 'No tiene permisos para realizar esta acción'},
-        #                     status=status.HTTP_401_UNAUTHORIZED)
+        if request.user.role != '6' and request.user.role != '2':
+            return Response({'error': 'No tiene permisos para realizar esta acción'},
+                            status=status.HTTP_401_UNAUTHORIZED)
         motion = get_object_or_404(Motion, id=id)
         try:
             id = motion.id
@@ -148,26 +151,28 @@ class DeleteMotionView(APIView):
 
 class ListPaymentsView(APIView):
     def get(self, request, format=None):
-
+        queryset = Payments.objects.all()
         try:
-            if Payments.objects.all().exists():
-                result = [{'id': pay.id, 'name': pay.name, 'business_name': pay.business_name,
-                           'report': pay.report.lot, 'weight': pay.weight, 'amount': pay.amount,
-                           'report_id': pay.report.id,
-                           'status': pay.status, 'date': pay.date, 'cancelled': pay.cancelled, 'receipt': pay.receipt}
-                          for pay in
-                          Payments.objects.all().order_by('-cancelled', '-id')]
-                return Response({'payments': result}, status=status.HTTP_200_OK)
-            else:
-                return Response({'No se encontraron registro de pagos'}, status=status.HTTP_400_BAD_REQUEST)
-        except:
-            return Response({"Ocurrió un error al obtener los registros"},
+            cancelled = request.query_params.get('cancelled', None)
+            if cancelled:
+                queryset = queryset.filter(cancelled=cancelled)
+            result = [{'id': pay.id, 'name': pay.name, 'business_name': pay.business_name,
+                       'report': pay.report.lot, 'weight': pay.weight, 'amount': pay.amount,
+                       'report_id': pay.report.id,
+                       'status': pay.status, 'date': pay.date, 'cancelled': pay.cancelled, 'receipt': pay.receipt}
+                      for pay in
+                      queryset.order_by('-cancelled', '-id')]
+            paginator = SetPagination()
+            results = paginator.paginate_queryset(result, request)
+            return paginator.get_paginated_response(results)
+        except Exception as e:
+            return Response({'error':"Ocurrió un error al obtener los registros",'error2':str(e)},
                             status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def post(self, request, format=None):
-        # if not request.user.is_superuser:
-        #     return Response({'error': 'No tiene permisos para realizar esta acción'},
-        #                     status=status.HTTP_401_UNAUTHORIZED)
+        if not request.user.is_superuser:
+            return Response({'error': 'No tiene permisos para realizar esta acción'},
+                            status=status.HTTP_401_UNAUTHORIZED)
         data = request.data
         if Payments.objects.filter(report=Lot.objects.get(id=data['report'])).exists():
             return Response({'error': 'El registro para este informe ya existe.'}, status=status.HTTP_400_BAD_REQUEST)
@@ -184,9 +189,9 @@ class ListPaymentsView(APIView):
 class DetailPaymentView(APIView):
 
     def patch(self, request, *args, **kwargs):
-        # if not request.user.is_superuser:
-        #     return Response({'error': 'No tiene permisos para realizar esta acción'},
-        #                     status=status.HTTP_401_UNAUTHORIZED)
+        if not request.user.is_superuser:
+            return Response({'error': 'No tiene permisos para realizar esta acción'},
+                            status=status.HTTP_401_UNAUTHORIZED)
         inf = get_object_or_404(Payments, id=kwargs['id'])
         try:
             serializer = PaymentSerializer(inf, data=request.data, partial=True)
@@ -198,9 +203,9 @@ class DetailPaymentView(APIView):
                             status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def delete(self, request, *args, **kwargs):
-        # if not request.user.is_superuser:
-        #     return Response({'error': 'No tiene permisos para realizar esta acción'},
-        #                     status=status.HTTP_401_UNAUTHORIZED)
+        if not request.user.is_superuser:
+            return Response({'error': 'No tiene permisos para realizar esta acción'},
+                            status=status.HTTP_401_UNAUTHORIZED)
         try:
             inf = get_object_or_404(Payments, id=kwargs['id'])
             inf.delete()
@@ -224,6 +229,7 @@ class ListDataForLocationView(APIView):
     def get(self, request, *args, **kwargs):
         location = get_object_or_404(Location, id=kwargs['id'])
         try:
+
             data = location.lot.filter(indicted=False, location=location)
             serializer = DataLocationSerializer(data, many=True)
             return Response({'result': serializer.data}, status=status.HTTP_200_OK)

@@ -15,7 +15,6 @@ class FruitsAdmin(ImportExportModelAdmin, SimpleHistoryAdmin):
 class PackingProductAdmin(ImportExportModelAdmin, SimpleHistoryAdmin):
     list_display = ('entry_date',
                     'provider',
-                    'quantity',
                     'type',
                     'lot',)
     list_filter = ('provider', 'type',)

@@ -76,7 +76,7 @@ class ProcessPineapple(models.Model):
                 total += d.get_net_weight()
             percentage = total / self.get_kg_mp() * 100
             return {'kg': total, 'percentage': percentage}
-        except:
+        except Exception as e:
             return {'kg': 0, 'percentage': 0}
 
     def get_total_peel(self):
@@ -185,4 +185,3 @@ class Peel(models.Model):
 
     def get_pallet_name(self):
         return self.pallet.name
-

@@ -17,7 +17,6 @@ import Users from "./containers/pages/Users";
 import Login from "./containers/authentication/Login";
 import DetailLot from "./containers/pages/LotDetail";
 import Test from "./containers/pages/Test";
-import Analysis from "./containers/pages/Analysis";
 import Conditioning from "./containers/pages/Conditioning";
 import Terminated from "./containers/pages/Terminated";
 import Released from "./containers/pages/Released";
@@ -32,7 +31,16 @@ import ProcessProduction from "./containers/pages/ProcessProduction";
 import DetailProcessPineapple from "./containers/pages/DetailProcessPineapple";
 import Report from "./containers/pages/Report";
 import Camera from "./containers/pages/Camera";
+import AnalysisAguaymanto from "./containers/pages/AnalysisAguaymanto";
+import AnalysisBlueberry from "./containers/pages/AnalysisBlueberry";
+import AnalysisMango from "./containers/pages/AnalysisMango";
+import AnalysisBanano from "./containers/pages/AnalysisBanano";
+import AnalysisPineapple from "./containers/pages/AnalysisPineapple";
 
+
+function AnaAnalysisPineapplelysis() {
+    return null;
+}
 
 const App = () => {
 
@@ -70,7 +78,11 @@ const App = () => {
 
                     {/*Quality*/}
                     <Route exact path="quality/cut-test" element={<Test/>}/>
-                    <Route exact path="quality/analysis" element={<Analysis/>}/>
+                    <Route exact path="quality/analysis/pineapple" element={<AnalysisPineapple/>}/>
+                    <Route exact path="quality/analysis/banano" element={<AnalysisBanano/>}/>
+                    <Route exact path="quality/analysis/blueberry" element={<AnalysisBlueberry/>}/>
+                    <Route exact path="quality/analysis/aguaymanto" element={<AnalysisAguaymanto/>}/>
+                    <Route exact path="quality/analysis/mango" element={<AnalysisMango/>}/>
                     {/*Process Line*/}
                     <Route exact path="quality/conditioning" element={<Conditioning/>}/>
                     <Route exact path="quality/terminated" element={<Terminated/>}/>

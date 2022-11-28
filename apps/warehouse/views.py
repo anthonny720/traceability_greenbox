@@ -3,6 +3,7 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from apps.util.pagination import SetPagination
 from apps.warehouse.models import Reception, PackingList, IReception, LotPT
 from apps.warehouse.serializers import IReceptionSerializer, IPackingList, ReceptionSerializer, \
     IReceptionDetailSerializer, ReceptionDetail, LotSerializer, PackingListSerializer, IPackingListSerializer, \
@@ -14,9 +15,11 @@ class ListReceptionView(APIView):
     def get(self, request, *args, **kwargs):
         try:
             if Reception.objects.all().exists():
+                paginator = SetPagination()
                 receptions = Reception.objects.all()
-                serializer = IReceptionSerializer(receptions, many=True)
-                return Response({'result': serializer.data}, status=status.HTTP_200_OK)
+                result = paginator.paginate_queryset(receptions, request)
+                serializer = IReceptionSerializer(result, many=True)
+                return paginator.get_paginated_response(serializer.data)
             else:
                 raise ValueError('No hay programas de recepción registrados')
         except Exception as e:
@@ -77,27 +80,35 @@ class AddIReceptionView(APIView):
 
 class IReceptionDetailView(APIView):
     def delete(self, request, *args, **kwargs):
-        if not request.user.role != "2":
+        if request.user.role != "2":
             return Response({'error': 'No tiene permisos para realizar esta acción'},
                             status=status.HTTP_401_UNAUTHORIZED)
         try:
             if IReception.objects.filter(id=kwargs['pk']).exists():
                 data = IReception.objects.get(id=kwargs['pk'])
+                if data.program.packing_list.status:
+                    return Response({'error': 'No se puede eliminar un registro que ya tiene un packing list'},
+                                    status=status.HTTP_400_BAD_REQUEST)
+                else:
+                    pass
                 data.delete()
                 return Response({'message': 'Registro eliminado correctamente'}, status=status.HTTP_200_OK)
             else:
-                raise ValueError('Ocurrió un error al eliminar el registro')
+                raise ValueError()
+
         except Exception as e:
-            return Response({'error': str(e)}, status=status.HTTP_404_NOT_FOUND)
+            return Response({'error': 'Ocurrió un error al eliminar el registro'}, status=status.HTTP_404_NOT_FOUND)
 
 
 class PackingListView(APIView):
     def get(self, request, *args, **kwargs):
         try:
             if PackingList.objects.all().exists():
+                paginator = SetPagination()
                 packing_list = PackingList.objects.all()
-                serializer = IPackingListSerializer(packing_list, many=True)
-                return Response({'result': serializer.data}, status=status.HTTP_200_OK)
+                result = paginator.paginate_queryset(packing_list, request)
+                serializer = IPackingListSerializer(result, many=True)
+                return paginator.get_paginated_response(serializer.data)
             else:
                 raise ValueError('No hay registros de packing list')
         except Exception as e:
@@ -117,8 +128,9 @@ class GetPackingListView(APIView):
     def patch(self, request, *args, **kwargs):
         packing = get_object_or_404(PackingList, slug=kwargs['slug'])
         if packing.status:
-            return Response({"error": "El registros ya esta bloqueado para su edición. Contáctese con el administrador"},
-                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response(
+                {"error": "El registro ya esta bloqueado para su edición. Contáctese con el administrador"},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
         if request.user.role != "2":
             return Response({'error': 'No tiene permisos para realizar esta acción'},
@@ -149,8 +161,9 @@ class AddLotPackingView(APIView):
     def post(self, request, *args, **kwargs):
         packing = get_object_or_404(PackingList, id=request.data['id'])
         if packing.status:
-            return Response({"error": "El registros ya esta bloqueado para su edición. Contáctese con el administrador"},
-                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response(
+                {"error": "El registro ya esta bloqueado para su edición. Contáctese con el administrador"},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         if request.user.role != "2":
             return Response({'error': 'No tiene permisos para realizar esta acción'},
                             status=status.HTTP_401_UNAUTHORIZED)
@@ -192,8 +205,9 @@ class DetailLotPackingView(APIView):
     def delete(self, request, *args, **kwargs):
         data = get_object_or_404(IPackingList, id=kwargs['id'])
         if data.packing_list.status:
-            return Response({"error": "El registros ya esta bloqueado para su edición. Contáctese con el administrador"},
-                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response(
+                {"error": "El registro ya esta bloqueado para su edición. Contáctese con el administrador"},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         if request.user.role != "2":
             return Response({'error': 'No tiene permisos para realizar esta acción'},
                             status=status.HTTP_401_UNAUTHORIZED)

@@ -70,7 +70,7 @@ class Client(ContactProxy):
     def get_total_sales(self):
         try:
             current_date = datetime.date(datetime.now())
-            return self.client_released.all().filter(release_date__year=current_date.year).count()
+            return self.receptions.all().filter(date__year=current_date.year).count()
         except:
             return 0
 

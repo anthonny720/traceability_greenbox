@@ -63,7 +63,6 @@ class PackingProduct(models.Model):
     provider = models.ForeignKey(ProviderPacking, on_delete=models.PROTECT, blank=False, null=False,
                                  verbose_name='Proveedor')
     docs = models.FileField(upload_to=custom_doc_file_path, blank=True, null=True, verbose_name='Documentos')
-    quantity = models.IntegerField(verbose_name='Cantidad', blank=False, null=False, default=0)
     type = models.CharField(max_length=100, verbose_name='Tipo', blank=False, null=False,
                             choices=[('Bolsas', 'Bolsas'), ('Cajas', 'Cajas')], default='Bolsas')
     lot = models.CharField(max_length=50, verbose_name='Lote', blank=False, null=False)

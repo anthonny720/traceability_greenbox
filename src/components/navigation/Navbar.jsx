@@ -14,7 +14,14 @@ import {logout} from "../../redux/actions/auth";
 const list = {
     'Producción': [{name: 'Procesos', href: '/production/'},],
     'Calidad': [{name: 'Prueba de corte', href: '/quality/cut-test/'}, {
-        name: 'Análisis', href: '/quality/analysis/'
+        name: 'Piña',
+        href: '/quality/analysis/pineapple'
+    }, {name: 'Mango', href: '/quality/analysis/mango'}, {
+        name: 'Aguaymanto',
+        href: '/quality/analysis/aguaymanto'
+    }, {name: 'Banano', href: '/quality/analysis/banano'}, {
+        name: 'Arándanos',
+        href: '/quality/analysis/blueberry'
     }, {name: 'Acondicionado', href: '/quality/conditioning/'}, {
         name: 'Envasado', href: '/quality/terminated/'
     }, {name: 'Liberación', href: '/quality/released'}],
@@ -31,7 +38,7 @@ const list = {
     }, {name: 'Proveedores', href: '/business-partners/providers/'}, {
         name: 'Transportes', href: '/business-partners/carrier/'
     },],
-    'Configuración': [{name: 'Usuarios', href: '/users/'}, {name: 'Historial', href: '/history/'}],
+    'Configuración': [{name: 'Usuarios', href: '/users/'},],
 }
 
 const social = [{

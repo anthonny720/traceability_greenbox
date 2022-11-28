@@ -7,15 +7,18 @@ from apps.quality.models import AnalysisBlueberry, AnalysisBanano, AnalysisAguay
     CutTest
 from apps.quality.serializers import AnalysisBlueberrySerializer, AnalysisBananoSerializer, \
     AnalysisAguaymantoSerializer, AnalysisMangoSerializer, AnalysisPineappleSerializer, CutTestSerializer
+from apps.util.pagination import SetPagination
 
 
 # Create your views here.
 class ListCutTestView(APIView):
     def get(self, request, *args, **kwargs):
         try:
+            paginator = SetPagination()
             queryset = CutTest.objects.all()
-            serializer = CutTestSerializer(queryset, many=True)
-            return Response({'result': serializer.data}, status=status.HTTP_200_OK)
+            results = paginator.paginate_queryset(queryset, request)
+            serializer = CutTestSerializer(results, many=True)
+            return paginator.get_paginated_response(serializer.data)
         except Exception as e:
             return Response({'error': 'Ocurrió un error al obtener los registros'}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -23,9 +26,6 @@ class ListCutTestView(APIView):
 class DetailCutTestView(APIView):
     def patch(self, request, *args, **kwargs):
         if request.user.role != '5':
-            return Response({'error': 'No tiene permisos para realizar esta acción'},
-                            status=status.HTTP_401_UNAUTHORIZED)
-        if request.user.role != "Calidad_Editor":
             return Response({'error': 'No tiene permisos para realizar esta acción'},
                             status=status.HTTP_401_UNAUTHORIZED)
         try:
@@ -44,9 +44,11 @@ class DetailCutTestView(APIView):
 class ListAnalysisPineappleView(APIView):
     def get(self, request, *args, **kwargs):
         try:
+            paginator = SetPagination()
             queryset = AnalysisPineapple.objects.all()
-            serializer = AnalysisPineappleSerializer(queryset, many=True)
-            return Response({'result': serializer.data}, status=status.HTTP_200_OK)
+            results = paginator.paginate_queryset(queryset, request)
+            serializer = AnalysisPineappleSerializer(results, many=True)
+            return paginator.get_paginated_response(serializer.data)
         except Exception as e:
             return Response({'error': 'Ocurrió un error al obtener los registros'}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -54,10 +56,11 @@ class ListAnalysisPineappleView(APIView):
 class ListAnalysisMangoView(APIView):
     def get(self, request, *args, **kwargs):
         try:
+            paginator = SetPagination()
             queryset = AnalysisMango.objects.all()
-            serializer = AnalysisMangoSerializer(queryset, many=True)
-
-            return Response({'result': serializer.data}, status=status.HTTP_200_OK)
+            results = paginator.paginate_queryset(queryset, request)
+            serializer = AnalysisMangoSerializer(results, many=True)
+            return paginator.get_paginated_response(serializer.data)
         except Exception as e:
             return Response({'error': 'Ocurrió un error al obtener los registros'}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -65,9 +68,12 @@ class ListAnalysisMangoView(APIView):
 class ListAnalysisAguaymantoView(APIView):
     def get(self, request, *args, **kwargs):
         try:
+            paginator = SetPagination()
             queryset = AnalysisAguaymanto.objects.all()
-            serializer = AnalysisAguaymantoSerializer(queryset, many=True)
-            return Response({'result': serializer.data}, status=status.HTTP_200_OK)
+            results = paginator.paginate_queryset(queryset, request)
+            serializer = AnalysisAguaymantoSerializer(results, many=True)
+            return paginator.get_paginated_response(serializer.data)
+
         except Exception as e:
             return Response({'error': 'Ocurrió un error al obtener los registros'}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -75,9 +81,11 @@ class ListAnalysisAguaymantoView(APIView):
 class ListAnalysisBananoView(APIView):
     def get(self, request, *args, **kwargs):
         try:
+            paginator = SetPagination()
             queryset = AnalysisBanano.objects.all()
-            serializer = AnalysisBananoSerializer(queryset, many=True)
-            return Response({'result': serializer.data}, status=status.HTTP_200_OK)
+            results = paginator.paginate_queryset(queryset, request)
+            serializer = AnalysisBananoSerializer(results, many=True)
+            return paginator.get_paginated_response(serializer.data)
         except Exception as e:
             return Response({'error': 'Ocurrió un error al obtener los registros'}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -85,9 +93,11 @@ class ListAnalysisBananoView(APIView):
 class ListAnalysisBlueberryView(APIView):
     def get(self, request, *args, **kwargs):
         try:
+            paginator = SetPagination()
             queryset = AnalysisBlueberry.objects.all()
-            serializer = AnalysisBlueberrySerializer(queryset, many=True)
-            return Response({'result': serializer.data}, status=status.HTTP_200_OK)
+            results = paginator.paginate_queryset(queryset, request)
+            serializer = AnalysisBlueberrySerializer(results, many=True)
+            return paginator.get_paginated_response(serializer.data)
         except Exception as e:
             return Response({'error': 'Ocurrió un error al obtener los registros'}, status=status.HTTP_400_BAD_REQUEST)
 

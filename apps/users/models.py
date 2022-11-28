@@ -24,7 +24,7 @@ class UserAccountManager(BaseUserManager):
         user.is_superuser = True
         user.is_staff = True
         user.save()
-        user.role = 'Visualizador'
+        user.role = '8'
 
         return user
 
@@ -43,6 +43,9 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['first_name', 'last_name']
+
+    def get_role_name(self):
+        return Roles[int(self.role) - 1][1]
 
     def get_full_name(self):
         return self.first_name + ' ' + self.last_name

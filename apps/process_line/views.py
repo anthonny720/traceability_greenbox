@@ -9,6 +9,7 @@ from apps.process_line.models import ProcessLineConditioning, ProcessLineTermina
 from apps.process_line.serializers import ConditioningListSerializer, TerminatedListSerializer, LiberatedListSerializer, \
     ConditioningSerializer, TypeCutSerializer, TerminatedSerializer, ReleasedSerializer, \
     LiberatedReceptionListSerializer
+from apps.util.pagination import SetPagination
 
 
 # Create your views here.
@@ -81,8 +82,10 @@ class ListGeneralConditioningView(APIView):
         if month:
             queryset = queryset.filter(process_date__month=month)
         try:
-            serializers = ConditioningListSerializer(queryset, many=True)
-            return Response({'result': serializers.data}, status=status.HTTP_200_OK)
+            paginator = SetPagination()
+            results = paginator.paginate_queryset(queryset, request)
+            serializers = ConditioningListSerializer(results, many=True)
+            return paginator.get_paginated_response(serializers.data)
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -103,8 +106,10 @@ class ListGeneralTerminatedView(APIView):
         if month:
             queryset = queryset.filter(packing_date__month=month)
         try:
-            serializers = TerminatedListSerializer(queryset, many=True)
-            return Response({'result': serializers.data}, status=status.HTTP_200_OK)
+            paginator = SetPagination()
+            results = paginator.paginate_queryset(queryset, request)
+            serializers = TerminatedListSerializer(results, many=True)
+            return paginator.get_paginated_response(serializers.data)
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -125,17 +130,19 @@ class ListGeneralReleasedView(APIView):
         if month:
             queryset = queryset.filter(release_date__month=month)
         try:
-            serializers = LiberatedListSerializer(queryset, many=True)
-            return Response({'result': serializers.data}, status=status.HTTP_200_OK)
+            paginator = SetPagination()
+            results = paginator.paginate_queryset(queryset, request)
+            serializers = LiberatedListSerializer(results, many=True)
+            return paginator.get_paginated_response(serializers.data)
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class DetailConditioningView(APIView):
     def patch(self, request, *args, **kwargs):
-        # if request.user.role != '5':
-        #     return Response({'error': 'No tiene permisos para realizar esta acción'},
-        #                     status=status.HTTP_401_UNAUTHORIZED)
+        if request.user.role != '5':
+            return Response({'error': 'No tiene permisos para realizar esta acción'},
+                            status=status.HTTP_401_UNAUTHORIZED)
         try:
             id = kwargs.get('id')
             qr = get_object_or_404(ProcessLineConditioning, id=id)
@@ -148,9 +155,9 @@ class DetailConditioningView(APIView):
                             status=status.HTTP_404_NOT_FOUND)
 
     def delete(self, request, *args, **kwargs):
-        # if request.user.role != '5':
-        #     return Response({'error': 'No tiene permisos para realizar esta acción'},
-        #                     status=status.HTTP_401_UNAUTHORIZED)
+        if request.user.role != '5':
+            return Response({'error': 'No tiene permisos para realizar esta acción'},
+                            status=status.HTTP_401_UNAUTHORIZED)
         try:
             id = kwargs.get('id')
             qr = get_object_or_404(ProcessLineConditioning, id=id)
@@ -162,9 +169,9 @@ class DetailConditioningView(APIView):
 
 class DetailTerminatedView(APIView):
     def patch(self, request, *args, **kwargs):
-        # if request.user.role != '5':
-        #     return Response({'error': 'No tiene permisos para realizar esta acción'},
-        #                     status=status.HTTP_401_UNAUTHORIZED)
+        if request.user.role != '5':
+            return Response({'error': 'No tiene permisos para realizar esta acción'},
+                            status=status.HTTP_401_UNAUTHORIZED)
         try:
             id = kwargs.get('id')
             qr = get_object_or_404(ProcessLineTerminated, id=id)
@@ -177,9 +184,9 @@ class DetailTerminatedView(APIView):
                             status=status.HTTP_404_NOT_FOUND)
 
     def delete(self, request, *args, **kwargs):
-        # if request.user.role != '5':
-        #     return Response({'error': 'No tiene permisos para realizar esta acción'},
-        #                     status=status.HTTP_401_UNAUTHORIZED)
+        if request.user.role != '5':
+            return Response({'error': 'No tiene permisos para realizar esta acción'},
+                            status=status.HTTP_401_UNAUTHORIZED)
         try:
             id = kwargs.get('id')
             qr = get_object_or_404(ProcessLineTerminated, id=id)
@@ -191,9 +198,9 @@ class DetailTerminatedView(APIView):
 
 class DetailReleasedView(APIView):
     def patch(self, request, *args, **kwargs):
-        # if request.user.role != '5':
-        #     return Response({'error': 'No tiene permisos para realizar esta acción'},
-        #                     status=status.HTTP_401_UNAUTHORIZED)
+        if request.user.role != '5':
+            return Response({'error': 'No tiene permisos para realizar esta acción'},
+                            status=status.HTTP_401_UNAUTHORIZED)
         try:
             id = kwargs.get('id')
             qr = get_object_or_404(ProcessLineReleased, id=id)
@@ -207,9 +214,9 @@ class DetailReleasedView(APIView):
                             status=status.HTTP_404_NOT_FOUND)
 
     def delete(self, request, *args, **kwargs):
-        # if request.user.role != '5':
-        #     return Response({'error': 'No tiene permisos para realizar esta acción'},
-        #                     status=status.HTTP_401_UNAUTHORIZED)
+        if request.user.role != '5':
+            return Response({'error': 'No tiene permisos para realizar esta acción'},
+                            status=status.HTTP_401_UNAUTHORIZED)
         try:
             id = kwargs.get('id')
             qr = get_object_or_404(ProcessLineReleased, id=id)
@@ -221,9 +228,9 @@ class DetailReleasedView(APIView):
 
 class CreateConditioningView(APIView):
     def post(self, request, *args, **kwargs):
-        # if request.user.role != '5':
-        #     return Response({'error': 'No tiene permisos para realizar esta acción'},
-        #                     status=status.HTTP_401_UNAUTHORIZED)
+        if request.user.role != '5':
+            return Response({'error': 'No tiene permisos para realizar esta acción'},
+                            status=status.HTTP_401_UNAUTHORIZED)
         try:
             serializer = ConditioningSerializer(data=request.data)
             serializer.is_valid(raise_exception=True)
@@ -238,9 +245,9 @@ class CreateConditioningView(APIView):
 
 class CreateTerminatedView(APIView):
     def post(self, request, *args, **kwargs):
-        # if request.user.role != '5':
-        #     return Response({'error': 'No tiene permisos para realizar esta acción'},
-        #                     status=status.HTTP_401_UNAUTHORIZED)
+        if request.user.role != '5':
+            return Response({'error': 'No tiene permisos para realizar esta acción'},
+                            status=status.HTTP_401_UNAUTHORIZED)
         try:
             serializer = TerminatedSerializer(data=request.data)
             serializer.is_valid(raise_exception=True)
@@ -253,9 +260,9 @@ class CreateTerminatedView(APIView):
 
 class CreateReleasedView(APIView):
     def post(self, request, *args, **kwargs):
-        # if request.user.role != '5':
-        #     return Response({'error': 'No tiene permisos para realizar esta acción'},
-        #                     status=status.HTTP_401_UNAUTHORIZED)
+        if request.user.role != '5':
+            return Response({'error': 'No tiene permisos para realizar esta acción'},
+                            status=status.HTTP_401_UNAUTHORIZED)
         try:
             serializer = ReleasedSerializer(data=request.data)
             serializer.is_valid(raise_exception=True)

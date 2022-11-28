@@ -9,6 +9,7 @@ from rest_framework.views import APIView
 from apps.products.models import Fruits
 from apps.report.models import Report
 from apps.report.serializers import ReportSerializer
+from apps.util.pagination import SetPagination
 
 
 def generate_color(transparency=1):
@@ -48,9 +49,10 @@ class ListReportView(APIView):
                 except Exception as e:
                     print(e)
             report.append({'kg': kg, 'price': price, 'total': total})
-            serializers = ReportSerializer(queryset, many=True)
-            return Response({'result': serializers.data, 'report': report},
-                            status=status.HTTP_200_OK)
+            paginator = SetPagination()
+            results = paginator.paginate_queryset(queryset, request)
+            serializers = ReportSerializer(results, many=True)
+            return paginator.get_paginated_response({'result': serializers.data, 'report': report})
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -60,17 +62,17 @@ months = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 
 
 class ReportView(APIView):
     def patch(self, request, *args, **kwargs):
-        # if request.user.role != "1":
-        #     return Response({'error': 'No tiene permisos para realizar esta acción'},
-        #                     status=status.HTTP_401_UNAUTHORIZED)
+        if request.user.role != "1" and request.user.role != "2":
+            return Response({'error': 'No tiene permisos para realizar esta acción'},
+                            status=status.HTTP_401_UNAUTHORIZED)
         report = get_object_or_404(Report, id=kwargs["id"])
         try:
             serializer = ReportSerializer(report, data=request.data, partial=True)
             serializer.is_valid(raise_exception=True)
             serializer.save()
-            return Response({'message':"Registro actualizado correctamente"}, status=status.HTTP_200_OK)
+            return Response({'message': "Registro actualizado correctamente"}, status=status.HTTP_200_OK)
         except Exception as e:
-            return Response({'error': "Ocurrió un error al actualizar el registro"},
+            return Response({'error': "Ocurrió un error al actualizar el registro", 'detail': str(e)},
                             status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 

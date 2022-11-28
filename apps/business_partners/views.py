@@ -8,19 +8,22 @@ from rest_framework.views import APIView
 from apps.business_partners.models import ProviderMP, Contact, Client, Carrier
 from apps.business_partners.serializers import ProviderMPSerializer, ContactSerializer, ClientsListSerializer, \
     ClientsDetailSerializer, ProviderDetailSerializer, CarrierSerializer
-from apps.process_line.models import ProcessLineReleased
-from apps.process_line.serializers import LiberatedSalesSerializer
 from apps.raw_material.models import Lot
 from apps.raw_material.serializers import SalesSerializer
+from apps.util.pagination import SetPagination
+from apps.warehouse.models import PackingList
+from apps.warehouse.serializers import IPackingListSerializer
 
 
 # Create your views here.
 class ListProviderView(APIView):
     def get(self, request):
         if ProviderMP.objects.exists():
+            pagination = SetPagination()
             providers = ProviderMP.objects.all()
-            serializer = ProviderMPSerializer(providers, many=True)
-            return Response({'result': serializer.data}, status=status.HTTP_200_OK)
+            results = pagination.paginate_queryset(providers, request)
+            serializer = ProviderMPSerializer(results, many=True)
+            return pagination.get_paginated_response(serializer.data)
         else:
             return Response({'error': 'No se encontraron proveedores'}, status=status.HTTP_404_NOT_FOUND)
 
@@ -28,18 +31,20 @@ class ListProviderView(APIView):
 class ListContactView(APIView):
     def get(self, request):
         if Contact.objects.exists():
+            pagination = SetPagination()
             contacts = Contact.objects.all()
-            serializer = ContactSerializer(contacts, many=True)
-            return Response({'result': serializer.data}, status=status.HTTP_200_OK)
+            results = pagination.paginate_queryset(contacts, request)
+            serializer = ContactSerializer(results, many=True)
+            return pagination.get_paginated_response(serializer.data)
         else:
             return Response({'error': 'No se encontraron contactos'}, status=status.HTTP_404_NOT_FOUND)
 
 
 class AddContactView(APIView):
     def post(self, request):
-        # if not request.user.is_superuser:
-        #     return Response({'error': 'No tiene permisos para realizar esta acción'},
-        #                     status=status.HTTP_401_UNAUTHORIZED)
+        if not request.user.is_superuser:
+            return Response({'error': 'No tiene permisos para realizar esta acción'},
+                            status=status.HTTP_401_UNAUTHORIZED)
         try:
             serializer = ContactSerializer(data=request.data)
             serializer.is_valid(raise_exception=True)
@@ -52,9 +57,9 @@ class AddContactView(APIView):
 
 class UpdateContactView(APIView):
     def patch(self, request, *args, **kwargs):
-        # if not request.user.is_superuser:
-        #     return Response({'error': 'No tiene permisos para realizar esta acción'},
-        #                     status=status.HTTP_401_UNAUTHORIZED)
+        if not request.user.is_superuser:
+            return Response({'error': 'No tiene permisos para realizar esta acción'},
+                            status=status.HTTP_401_UNAUTHORIZED)
         data = request.data
         try:
             contact = get_object_or_404(Contact, id=kwargs['id'])
@@ -69,9 +74,9 @@ class UpdateContactView(APIView):
 
 class DeleteContactView(APIView):
     def delete(self, request, *args, **kwargs):
-        # if not request.user.is_superuser:
-        #     return Response({'error': 'No tiene permisos para realizar esta acción'},
-        #                     status=status.HTTP_401_UNAUTHORIZED)
+        if not request.user.is_superuser:
+            return Response({'error': 'No tiene permisos para realizar esta acción'},
+                            status=status.HTTP_401_UNAUTHORIZED)
         try:
             contact_id = int(kwargs['id'])
         except:
@@ -88,9 +93,11 @@ class DeleteContactView(APIView):
 class ListClientView(APIView):
     def get(self, request, *args, **kwargs):
         try:
+            pagination = SetPagination()
             clients = Client.objects.all()
-            serializer = ClientsListSerializer(clients, many=True)
-            return Response({'result': serializer.data}, status=status.HTTP_200_OK)
+            results = pagination.paginate_queryset(clients, request)
+            serializer = ClientsListSerializer(results, many=True)
+            return pagination.get_paginated_response(serializer.data)
         except Exception as e:
             return Response({'error': 'No se encontraron registros'}, status=status.HTTP_404_NOT_FOUND)
 
@@ -140,31 +147,33 @@ class SalesClientView(APIView):
         try:
             client_slug = kwargs.get('slug')
             current_date = datetime.date(datetime.now())
-            qr = ProcessLineReleased.objects.all().filter(client__slug=client_slug,
-                                                          release_date__year=current_date.year)
-            serializer = LiberatedSalesSerializer(qr, many=True)
+            qr = PackingList.objects.filter(reception__client__slug=client_slug,
+                                            reception__date__year=current_date.year)
+            serializer = IPackingListSerializer(qr, many=True)
             return Response({'result': serializer.data}, status=status.HTTP_200_OK)
 
         except Exception as e:
-            return Response({'error': 'Ocurrio un error al obtener la información'},
+            return Response({'error': 'Ocurrio un error al obtener la información', 'detail': str(e)},
                             status=status.HTTP_404_NOT_FOUND)
 
 
 class ListCarrierView(APIView):
     def get(self, request):
         if Carrier.objects.exists():
+            pagination = SetPagination()
             carrier = Carrier.objects.all()
-            serializer = CarrierSerializer(carrier, many=True)
-            return Response({'result': serializer.data}, status=status.HTTP_200_OK)
+            results = pagination.paginate_queryset(carrier, request)
+            serializer = CarrierSerializer(results, many=True)
+            return pagination.get_paginated_response(serializer.data)
         else:
             return Response({'error': 'No se encontraron registros de transportes'}, status=status.HTTP_404_NOT_FOUND)
 
 
 class AddCarrierView(APIView):
     def post(self, request):
-        # if not request.user.is_superuser:
-        #     return Response({'error': 'No tiene permisos para realizar esta acción'},
-        #                     status=status.HTTP_401_UNAUTHORIZED)
+        if not request.user.is_superuser:
+            return Response({'error': 'No tiene permisos para realizar esta acción'},
+                            status=status.HTTP_401_UNAUTHORIZED)
         try:
             serializer = CarrierSerializer(data=request.data)
             serializer.is_valid(raise_exception=True)
@@ -177,9 +186,9 @@ class AddCarrierView(APIView):
 
 class UpdateCarrierView(APIView):
     def patch(self, request, *args, **kwargs):
-        # if not request.user.is_superuser:
-        #     return Response({'error': 'No tiene permisos para realizar esta acción'},
-        #                     status=status.HTTP_401_UNAUTHORIZED)
+        if not request.user.is_superuser:
+            return Response({'error': 'No tiene permisos para realizar esta acción'},
+                            status=status.HTTP_401_UNAUTHORIZED)
         data = request.data
         try:
             carrier = get_object_or_404(Carrier, id=kwargs['id'])
@@ -194,9 +203,9 @@ class UpdateCarrierView(APIView):
 
 class DeleteCarrierView(APIView):
     def delete(self, request, *args, **kwargs):
-        # if not request.user.is_superuser:
-        #     return Response({'error': 'No tiene permisos para realizar esta acción'},
-        #                     status=status.HTTP_401_UNAUTHORIZED)
+        if not request.user.is_superuser:
+            return Response({'error': 'No tiene permisos para realizar esta acción'},
+                            status=status.HTTP_401_UNAUTHORIZED)
         try:
             contact_id = int(kwargs['id'])
         except:

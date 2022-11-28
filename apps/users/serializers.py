@@ -18,7 +18,8 @@ class UserCreateSerializer(UserCreateSerializer):
             'get_short_name',
             'get_admin',
             'password',
-            'role')
+            'role','get_role_name')
+
 
 # class UserActivitySerializer(serializers.ModelSerializer):
 #     class Meta:
