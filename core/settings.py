@@ -39,6 +39,7 @@ DJANGO_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 ]
+
 PROJECT_APPS = [
     'apps.users',
     'apps.products',
@@ -49,8 +50,10 @@ PROJECT_APPS = [
     'apps.process_line',
     'apps.production',
     'apps.warehouse',
-    'apps.report'
+    'apps.report',
+    'apps.commercial',
 ]
+
 THIRD_PARTY_APPS = [
     'corsheaders',
     'simple_history',
@@ -115,7 +118,6 @@ DATABASES = {
 # }
 
 # DATABASES = {"default": env.db("DATABASE_URL", default="postgres:///logistic_gb"), }
-
 DATABASES["default"]["ATOMIC_REQUESTS"] = True
 
 # Password validation
@@ -161,14 +163,13 @@ REST_FRAMEWORK = {
     ),
 }
 
-
 # JWT
 
 SIMPLE_JWT = {
-    'AUTH_HEADER_TYPES': ('JWT', ),
+    'AUTH_HEADER_TYPES': ('JWT',),
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=10080),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=30),
-    'ROTATE_REFRESFH_TOKENS':True,
+    'ROTATE_REFRESFH_TOKENS': True,
     'BLACKLIST_AFTER_ROTATION': True,
     'AUTH_TOKEN_CLASSES': (
         'rest_framework_simplejwt.tokens.AccessToken',

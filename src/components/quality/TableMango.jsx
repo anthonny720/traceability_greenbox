@@ -8,7 +8,7 @@ import {Link} from "react-router-dom";
 import Humanize from 'humanize-plus'
 
 const Table = ({data, update}) => {
-    const columns = ['Acciones', 'Lote MP', 'Peso neto', 'Jabas', 'Color 1 %', 'Color 1,5 -  2,5 %', 'Color >=3 %', 'Brix 7-9 %', 'Brix 10-12 %', 'Brix >13 %', 'Peso <280 %', 'Peso 280-300 %', 'Peso >300 %', 'Daños mecánicos %', 'Rajados  %', 'Daños de sol %', 'Antracnosis %', 'Sobre maduración %', 'Latex %', 'Queresa %', 'Insectos %', 'Fruta blanda %', 'Avanzado %', 'Total defectos %', 'Total fruta sin daño %',]
+    const columns = ['Acciones', 'Lote MP', 'Peso neto', 'Jabas', 'Color 1 %', 'Color 1,5 %', 'Color 2 %', 'Color 2.5 %', 'Color 3 %', 'Brix 7-9 %', 'Brix 10-12 %', 'Brix >13 %', 'Peso <280 %', 'Peso 280-300 %', 'Peso >300 %', 'Daños mecánicos %', 'Rajados  %', 'Daños de sol %', 'Antracnosis %','Pudrición %', 'Sobre maduración %', 'Latex %', 'Queresa %', 'Insectos %', 'Fruta blanda %', 'Avanzado %', 'Total defectos %', 'Total fruta sin daño %',]
     const tableRef = useRef(null);
     return (<div className="overflow-x-auto relative scrollbar-hide">
         <DownloadTableExcel
@@ -40,7 +40,9 @@ const Table = ({data, update}) => {
                 <td className="py-4 px-6 whitespace-nowrap text-center">{Humanize.formatNumber(row?.net_weight, 2)}</td>
                 <td className="py-4 px-6 whitespace-nowrap text-center">{row?.boxes}</td>
                 <td className="py-4 px-6 whitespace-nowrap text-center">{Humanize.formatNumber(row?.color_1, 2)}</td>
-                <td className="py-4 px-6 whitespace-nowrap text-center">{Humanize.formatNumber(row?.color_1_5_2_5, 2)}</td>
+                <td className="py-4 px-6 whitespace-nowrap text-center">{Humanize.formatNumber(row?.color_1_5, 2)}</td>
+                <td className="py-4 px-6 whitespace-nowrap text-center">{Humanize.formatNumber(row?.color_2, 2)}</td>
+                <td className="py-4 px-6 whitespace-nowrap text-center">{Humanize.formatNumber(row?.color_2_5, 2)}</td>
                 <td className="py-4 px-6 whitespace-nowrap text-center">{Humanize.formatNumber(row?.color_3, 2)}</td>
                 <td className="py-4 px-6 whitespace-nowrap text-center">{Humanize.formatNumber(row?.brix_7_9, 2)}</td>
                 <td className="py-4 px-6 whitespace-nowrap text-center">{Humanize.formatNumber(row?.brix_10_12, 2)}</td>
@@ -52,6 +54,7 @@ const Table = ({data, update}) => {
                 <td className="py-4 px-6 whitespace-nowrap text-center">{Humanize.formatNumber(row?.cracked, 2)}</td>
                 <td className="py-4 px-6 whitespace-nowrap text-center">{Humanize.formatNumber(row?.sun_damage, 2)}</td>
                 <td className="py-4 px-6 whitespace-nowrap text-center">{Humanize.formatNumber(row?.anthracnose, 2)}</td>
+                <td className="py-4 px-6 whitespace-nowrap text-center">{Humanize.formatNumber(row?.rot, 2)}</td>
                 <td className="py-4 px-6 whitespace-nowrap text-center">{Humanize.formatNumber(row?.mature, 2)}</td>
                 <td className="py-4 px-6 whitespace-nowrap text-center">{Humanize.formatNumber(row?.latex, 2)}</td>
                 <td className="py-4 px-6 whitespace-nowrap text-center">{Humanize.formatNumber(row?.queresa, 2)}</td>
@@ -59,6 +62,7 @@ const Table = ({data, update}) => {
                 <td className="py-4 px-6 whitespace-nowrap text-center">{Humanize.formatNumber(row?.soft, 2)}</td>
                 <td className="py-4 px-6 whitespace-nowrap text-center">{Humanize.formatNumber(row?.advanced, 2)}</td>
                 <td className="py-4 px-6 whitespace-nowrap text-center">{Humanize.formatNumber(row?.total_defects, 2)}</td>
+                <td className="py-4 px-6 whitespace-nowrap text-center">{Humanize.formatNumber(row?.total_unharmed, 2)}</td>
 
 
             </tr>)) : <tr>

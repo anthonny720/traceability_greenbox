@@ -6,12 +6,14 @@ from apps.raw_material.models import Lot, ILot
 class SalesSerializer(serializers.ModelSerializer):
     net_weight = serializers.DecimalField(source='get_total_net_weight', read_only=True, max_digits=10,
                                           decimal_places=2)
+
     class Meta:
         model = Lot
-        fields = ('lot','entryDate', 'condition', 'origin', 'parcel', 'net_weight')
+        fields = ('lot', 'entryDate', 'condition', 'origin', 'parcel', 'net_weight')
 
 
 class LotListSerializer(serializers.ModelSerializer):
+    business_maquila = serializers.CharField(source='maquila.name', read_only=True)
     category_name = serializers.CharField(source='category.name', read_only=True)
     stock = serializers.CharField(source='get_stock', read_only=True)
     net_weight = serializers.CharField(source='get_total_net_weight', read_only=True)
@@ -19,7 +21,8 @@ class LotListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Lot
         fields = (
-            'id', 'downloadDate', 'category_name', 'lot', 'condition', 'variety', 'stock', 'net_weight',)
+            'id', 'downloadDate', 'category_name', 'lot', 'condition', 'variety', 'stock', 'net_weight',
+            'business_maquila')
 
 
 class LotSerializer(serializers.ModelSerializer):
@@ -52,6 +55,7 @@ class LotDetailSerializer(serializers.ModelSerializer):
     total_indicted = serializers.CharField(source='get_total_indicted', read_only=True)
     stock = serializers.CharField(source='get_stock', read_only=True)
     brute_weight = serializers.CharField(source='get_total_brute_weight', read_only=True)
+    business_maquila = serializers.CharField(source='maquila.name', read_only=True)
 
     class Meta:
         model = Lot
@@ -64,14 +68,15 @@ class ILotSerializer(serializers.ModelSerializer):
     pallet_name = serializers.CharField(source='get_pallet', read_only=True)
     boxes = serializers.CharField(source='get_quantity_boxes', read_only=True)
     indicted_type = serializers.CharField(source='get_indicted', read_only=True)
-    location_name= serializers.CharField(source='location.name', read_only=True)
+    location_name = serializers.CharField(source='location.name', read_only=True)
 
     class Meta:
         model = ILot
-        fields = ('number', 'indicted_type', 'dateIndicted','location_name', 'weight', 'net_weight', 'tare', 'final_weight',
-                  'net_final_weight', 'gb', 'pa', 'co', 't0', 't1', 't2', 'gn', 'ma', 'c6', 'c8', 'c10', 'c12', 'c14'
-                  , 'pallet_name', 'boxes', 'pallet','id','indicted','location',
-                  )
+        fields = (
+            'number', 'indicted_type', 'dateIndicted', 'location_name', 'weight', 'net_weight', 'tare', 'final_weight',
+            'net_final_weight', 'gb', 'pa', 'co', 't0', 't1', 't2', 'gn', 'ma', 'c6', 'c8', 'c10', 'c12', 'c14'
+            , 'pallet_name', 'boxes', 'pallet', 'id', 'indicted', 'location',
+        )
 
 
 class ILotCRUDSerializer(serializers.ModelSerializer):
@@ -81,10 +86,11 @@ class ILotCRUDSerializer(serializers.ModelSerializer):
 
 
 class DataLocationSerializer(serializers.ModelSerializer):
-    boxes=serializers.CharField(source='get_quantity_boxes',read_only=True)
+    boxes = serializers.CharField(source='get_quantity_boxes', read_only=True)
     net_weight = serializers.CharField(source='get_net_weight', read_only=True)
-    lot=serializers.CharField(source='lot.lot',read_only=True)
-    category=serializers.CharField(source='lot.get_category_name',read_only=True)
+    lot = serializers.CharField(source='lot.lot', read_only=True)
+    category = serializers.CharField(source='lot.get_category_name', read_only=True)
+
     class Meta:
         model = ILot
-        fields = ('number','weight','net_weight','boxes','category','lot')
+        fields = ('number', 'weight', 'net_weight', 'boxes', 'category', 'lot')

@@ -121,3 +121,15 @@ class Carrier(models.Model):
         verbose_name = 'Empresa de Transporte'
         verbose_name_plural = "Empresas de Transporte"
         ordering = ['-id']
+
+
+class BusinessMaquila(ContactProxy):
+    history = HistoricalRecords()
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = 'Empresa de Maquila'
+        verbose_name_plural = "Empresas de Maquila"
+        ordering = ['-id']

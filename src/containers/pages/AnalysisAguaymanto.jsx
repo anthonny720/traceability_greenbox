@@ -7,7 +7,6 @@ import Layout from "../../hocs/Layout";
 import Table from "../../components/quality/TableAguaymanto";
 import {get_analysis_aguaymanto, get_analysis_aguaymanto_page} from "../../redux/actions/quality";
 import SetPagination from "../../components/util/Pagination";
-import {get_lots_page} from "../../redux/actions/raw_material";
 
 
 const AnalysisAguaymanto = () => {

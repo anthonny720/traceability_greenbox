@@ -12,6 +12,7 @@ import Dropdown from "./Dropdown";
 import {logout} from "../../redux/actions/auth";
 
 const list = {
+    'Comercial': [{name: 'Stock', href: '/commercial/'},],
     'Producción': [{name: 'Procesos', href: '/production/'},],
     'Calidad': [{name: 'Prueba de corte', href: '/quality/cut-test/'}, {
         name: 'Piña',

@@ -15,13 +15,27 @@ def custom_doc_file_path(instance, filename):
     return '/'.join(['ENVASES_EMBALAJES', filename])
 
 
+def custom_doc_file(instance, filename):
+    ext = filename.split('.')[-1]
+    filename = "%s.%s" % (uuid.uuid4(), ext)
+    return '/'.join(['FRUTAS', instance.name, filename])
+
+
 # Create your models here.
 class Fruits(models.Model):
     name = models.CharField(max_length=100)
+    thumbnail = models.ImageField(upload_to=custom_doc_file, blank=True, null=True)
+
     history = HistoricalRecords()
 
     def __str__(self):
         return self.name
+
+    def get_thumbnail(self):
+        if self.thumbnail:
+            return self.thumbnail.url
+        else:
+            return None
 
     def get_stock(self):
         t = 0
