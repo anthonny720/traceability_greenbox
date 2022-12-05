@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/static/css/main.b44a2e0b.css",
-    "main.js": "/static/js/main.a186b4aa.js",
+    "main.js": "/static/js/main.f80e3208.js",
     "static/media/logistics.png": "/static/media/logistics.d13b1a4dfeafc500ddf4.png",
     "static/media/packers-and-movers.gif": "/static/media/packers-and-movers.b08c8ee753e474ccbd20.gif",
     "index.html": "/index.html",
     "main.b44a2e0b.css.map": "/static/css/main.b44a2e0b.css.map",
-    "main.a186b4aa.js.map": "/static/js/main.a186b4aa.js.map"
+    "main.f80e3208.js.map": "/static/js/main.f80e3208.js.map"
   },
   "entrypoints": [
     "static/css/main.b44a2e0b.css",
-    "static/js/main.a186b4aa.js"
+    "static/js/main.f80e3208.js"
   ]
 }
