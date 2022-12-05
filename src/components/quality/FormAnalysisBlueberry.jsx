@@ -9,31 +9,14 @@ import {map} from "lodash";
 
 const FormAnalysisBlueberry = ({close, data}) => {
     const columns = [{name: 'average_brix', title: 'Brix promedio', type: 'text', maxLength: 4,}, {
-        name: 'max_brix',
-        title: 'Brix máximo',
-        type: 'text',
-        maxLength: 4,
+        name: 'max_brix', title: 'Brix máximo', type: 'text', maxLength: 4,
     }, {name: 'min_brix', title: 'Brix mínimo', type: 'text', maxLength: 4,}, {
-        name: 'caliber_1',
-        title: 'Calibre 1 <=11',
-        type: 'text',
-        maxLength: 4,
+        name: 'caliber_1', title: 'Calibre 1 <=11', type: 'text', maxLength: 4,
     }, {name: 'caliber_2', title: 'Calibre 2 12 -18', type: 'text', maxLength: 4,}, {
-        name: 'caliber_3',
-        title: 'Calibre 3 >=19',
-        type: 'text',
-        maxLength: 4,
+        name: 'caliber_3', title: 'Calibre 3 >=19', type: 'text', maxLength: 4,
     }, {name: 'green', title: 'Verde', type: 'text', maxLength: 4,}, {
-        name: 'crushed',
-        title: 'Aplastado',
-        type: 'text',
-        maxLength: 4,
-    }, {name: 'mechanical_damages', title: 'Daños mecánicos', type: 'text', maxLength: 4,}, {
-        name: 'unharmed',
-        title: 'Sin daños',
-        type: 'text',
-        maxLength: 4,
-    },]
+        name: 'crushed', title: 'Aplastado', type: 'text', maxLength: 4,
+    }, {name: 'mechanical_damages', title: 'Daños mecánicos', type: 'text', maxLength: 4,},]
     const dispatch = useDispatch();
     const formik = useFormik({
         initialValues: initialValues(data),
@@ -46,7 +29,7 @@ const FormAnalysisBlueberry = ({close, data}) => {
     return (<div className="w-full z-20">
         <form className="bg-white px-8 pt-6 pb-8 mb-4">
             <div className={"grid grid-cols-2 gap-2"}>
-                {map(columns, (column, index) => (<div  key={index}>
+                {map(columns, (column, index) => (<div key={index}>
                     <p className={`${formik.errors[column.name] ? "text-red-500" : "text-base mt-4 font-medium leading-none text-gray-800"}`}>{column.title}:</p>
                     <input type={column.type} maxLength={column.maxLength}
                            className="w-full p-3 mt-4 border border-gray-300 rounded outline-none focus:bg-gray-50 uppercase"
@@ -79,7 +62,6 @@ const initialValues = (data) => {
         green: data?.green || 0,
         crushed: data?.crushed || 0,
         mechanical_damages: data?.mechanical_damages || 0,
-        unharmed: data?.unharmed || 0,
     }
 
 }
@@ -94,7 +76,6 @@ const newSchema = () => {
         green: Yup.number().min(0).max(100).required(),
         crushed: Yup.number().min(0).max(100).required(),
         mechanical_damages: Yup.number().min(0).max(100).required(),
-        unharmed: Yup.number().min(0).max(100).required(),
 
 
     }

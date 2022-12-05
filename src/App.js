@@ -36,11 +36,8 @@ import AnalysisBlueberry from "./containers/pages/AnalysisBlueberry";
 import AnalysisMango from "./containers/pages/AnalysisMango";
 import AnalysisBanano from "./containers/pages/AnalysisBanano";
 import AnalysisPineapple from "./containers/pages/AnalysisPineapple";
+import Commercial from "./containers/pages/Comercial";
 
-
-function AnaAnalysisPineapplelysis() {
-    return null;
-}
 
 const App = () => {
 
@@ -100,6 +97,9 @@ const App = () => {
 
                     {/*Report*/}
                     <Route exact path="report/:category" element={<Report/>}/>
+
+                    {/*Comercial*/}
+                    <Route exact path="commercial/" element={<Commercial/>}/>
 
 
                 </Routes>

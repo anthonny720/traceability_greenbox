@@ -50,6 +50,7 @@ class AnalysisBlueberrySerializer(serializers.ModelSerializer):
     boxes = serializers.CharField(source='lot.get_quantity_boxes', read_only=True)
     lot_name = serializers.CharField(source='get_lot', read_only=True)
     net_weight = serializers.CharField(source='lot.get_total_final_weight', read_only=True)
+    unharmed= serializers.CharField(source='get_unharmed', read_only=True)
 
     class Meta:
         model = AnalysisBlueberry
@@ -75,6 +76,7 @@ class AnalysisAguaymantoSerializer(serializers.ModelSerializer):
     net_weight = serializers.CharField(source='lot.get_total_final_weight', read_only=True)
     lot_name = serializers.CharField(source='get_lot', read_only=True)
     maturation_total = serializers.CharField(source='get_maturation_total', read_only=True)
+    defects = serializers.CharField(source='get_defects', read_only=True)
 
     class Meta:
         model = AnalysisAguaymanto

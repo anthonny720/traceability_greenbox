@@ -14,13 +14,17 @@ const FormAnalysisAguaymanto = ({close, data}) => {
         name: 'maturation_3', title: 'Maduración 3 %', type: 'text', maxLength: 4,
     }, {name: 'mushroom', title: 'Hongos y fermentado', type: 'text', maxLength: 4,}, {
         name: 'green', title: 'Verde', type: 'text', maxLength: 4,
-    }, {name: 'crushed', title: 'Aplastado', type: 'text', maxLength: 4,},
-        {name: 'cracked', title: 'Rajado', type: 'text', maxLength: 4,},
-        {name: 'phytosanitary', title: 'Fitosanitario', type: 'text', maxLength: 4,},
-        {name: 'watery', title: 'Consistencia aguada', type: 'text', maxLength: 4,},
-        {name: 'defects', title: 'Defectos', type: 'text', maxLength: 4,},
-
-    ]
+    }, {name: 'crushed', title: 'Aplastado', type: 'text', maxLength: 4,}, {
+        name: 'cracked',
+        title: 'Rajado',
+        type: 'text',
+        maxLength: 4,
+    }, {name: 'phytosanitary', title: 'Fitosanitario', type: 'text', maxLength: 4,}, {
+        name: 'watery',
+        title: 'Consistencia aguada',
+        type: 'text',
+        maxLength: 4,
+    },]
     const dispatch = useDispatch();
     const formik = useFormik({
         initialValues: initialValues(data),
@@ -66,7 +70,6 @@ const initialValues = (data) => {
         cracked: data?.cracked || 0,
         phytosanitary: data?.phytosanitary || 0,
         watery: data?.watery || 0,
-        defects: data?.defects || 0,
     }
 
 }
@@ -81,7 +84,6 @@ const newSchema = () => {
         cracked: Yup.number().min(0).max(100).required(),
         phytosanitary: Yup.number().min(0).max(100).required(),
         watery: Yup.number().min(0).max(100).required(),
-        defects: Yup.number().min(0).max(100).required(),
 
     }
 }

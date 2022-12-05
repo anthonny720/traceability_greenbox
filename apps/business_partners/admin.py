@@ -2,7 +2,7 @@ from django.contrib import admin
 from import_export.admin import ImportExportModelAdmin
 from simple_history.admin import SimpleHistoryAdmin
 
-from apps.business_partners.models import ProviderMP, Client, ProviderPacking, Contact, Carrier
+from apps.business_partners.models import ProviderMP, Client, ProviderPacking, Contact, Carrier, BusinessMaquila
 
 
 # Register your models here.
@@ -22,6 +22,13 @@ class ClientAdmin(ImportExportModelAdmin, SimpleHistoryAdmin):
 
 @admin.register(ProviderPacking)
 class ProviderPackingAdmin(ImportExportModelAdmin, SimpleHistoryAdmin):
+    list_display = ('name', 'ruc', 'contact', 'email')
+    search_fields = ('name', 'ruc', 'contact', 'email')
+    list_per_page = 20
+
+
+@admin.register(BusinessMaquila)
+class BusinessMaquilaPackingAdmin(ImportExportModelAdmin, SimpleHistoryAdmin):
     list_display = ('name', 'ruc', 'contact', 'email')
     search_fields = ('name', 'ruc', 'contact', 'email')
     list_per_page = 20

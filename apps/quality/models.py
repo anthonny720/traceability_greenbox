@@ -119,8 +119,7 @@ class AnalysisAguaymanto(models.Model):
                                         verbose_name='Fitosanitario')
     watery = models.DecimalField(decimal_places=2, max_digits=4, default=0, blank=True, null=True,
                                  verbose_name='Consistencia aguada')
-    defects = models.DecimalField(decimal_places=2, max_digits=4, default=0, blank=True, null=True,
-                                  verbose_name=u"Defectos")
+
     history = HistoricalRecords()
 
     def __str__(self):
@@ -128,6 +127,12 @@ class AnalysisAguaymanto(models.Model):
 
     def get_lot(self):
         return self.lot.lot
+
+    def get_defects(self):
+        try:
+            return self.mushroom + self.green + self.cracked + self.crushed + self.phytosanitary + self.watery
+        except:
+            return 0
 
     def get_maturation_total(self):
         try:
@@ -200,14 +205,18 @@ class AnalysisBlueberry(models.Model):
                                   verbose_name=u"Aplastado")
     mechanical_damages = models.DecimalField(decimal_places=2, max_digits=4, default=0, blank=True, null=True,
                                              verbose_name=u"Daños mecánicos")
-    unharmed = models.DecimalField(decimal_places=2, max_digits=4, default=0, blank=True, null=True,
-                                   verbose_name=u"Sin daños")
     history = HistoricalRecords()
 
     class Meta:
         verbose_name = "Análisis de Arándanos"
         verbose_name_plural = "Análisis de Arándanos"
         ordering = ['-id']
+
+    def get_unharmed(self):
+        try:
+            return 100 - self.green - self.crushed - self.mechanical_damages
+        except:
+            return 0
 
     def get_lot(self):
         return self.lot.lot
@@ -222,10 +231,14 @@ class AnalysisMango(models.Model):
 
     color_1 = models.DecimalField(decimal_places=2, max_digits=4, default=0, blank=True, null=True,
                                   verbose_name=u"Color 1")
-    color_1_5_2_5 = models.DecimalField(decimal_places=2, max_digits=4, default=0, blank=True, null=True,
-                                        verbose_name=u"Color 1,5 -  2,5")
+    color_1_5 = models.DecimalField(decimal_places=2, max_digits=4, default=0, blank=True, null=True,
+                                    verbose_name=u"Color 1,5 ")
+    color_2 = models.DecimalField(decimal_places=2, max_digits=4, default=0, blank=True, null=True,
+                                  verbose_name=u"Color 2")
+    color_2_5 = models.DecimalField(decimal_places=2, max_digits=4, default=0, blank=True, null=True,
+                                    verbose_name=u"Color 2,5")
     color_3 = models.DecimalField(decimal_places=2, max_digits=4, default=0, blank=True, null=True,
-                                  verbose_name=u"Color >=3")
+                                  verbose_name=u"Color 3")
     brix_7_9 = models.DecimalField(decimal_places=2, max_digits=4, default=0, blank=True, null=True,
                                    verbose_name=u"Brix 7-9")
     brix_10_12 = models.DecimalField(decimal_places=2, max_digits=4, default=0, blank=True, null=True,
@@ -270,8 +283,7 @@ class AnalysisMango(models.Model):
 
     def get_total_defects(self):
         try:
-            return self.mechanical_damage + self.cracked + self.sun_damage + self.anthracnose + self.rot + self.mature + \
-                   self.latex + self.queresa + self.insect_bite + self.soft + self.advanced
+            return self.mechanical_damage + self.cracked + self.sun_damage + self.anthracnose + self.rot + self.mature + self.latex + self.queresa + self.insect_bite + self.soft + self.advanced
         except:
             return 0
 

@@ -7,7 +7,7 @@ from django.db.models.signals import post_delete, pre_save
 from django.dispatch import receiver
 from simple_history.models import HistoricalRecords
 
-from apps.business_partners.models import ProviderMP, Contact, Carrier
+from apps.business_partners.models import ProviderMP, Contact, Carrier, BusinessMaquila
 from apps.products.models import Fruits, Pallets, Boxes
 
 
@@ -20,6 +20,7 @@ def custom_doc_file_path(instance, filename):
 # Create your models here.
 
 class Lot(models.Model):
+    maquila = models.ForeignKey(BusinessMaquila, on_delete=models.CASCADE, null=True, blank=True)
     provider = models.ForeignKey(ProviderMP, on_delete=models.PROTECT, related_name="provider_entry",
                                  verbose_name="Proveedor")
     origin = models.CharField(max_length=100, verbose_name="Origen")
