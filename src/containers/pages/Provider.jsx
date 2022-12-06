@@ -7,9 +7,6 @@ import Header from "../../components/business/Header";
 import Tabs from "../../components/business/Tabs";
 import {get_provider, get_sales_provider} from "../../redux/actions/business_partners";
 
-function classNames(...classes) {
-    return classes.filter(Boolean).join(' ')
-}
 
 const ProviderDetail = () => {
     const {slug} = useParams()

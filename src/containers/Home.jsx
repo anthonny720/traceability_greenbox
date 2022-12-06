@@ -3,7 +3,7 @@ import Layout from "../hocs/Layout";
 import SummaryStock from "../components/home/Summary";
 import {useDispatch, useSelector} from "react-redux";
 import {get_fruits} from "../redux/actions/products";
-import {get_providers} from "../redux/actions/business_partners";
+import {get_full_providers} from "../redux/actions/business_partners";
 import Modal from "../components/util/Modal";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faPlusCircle} from "@fortawesome/free-solid-svg-icons";
@@ -37,7 +37,7 @@ const Home = () => {
     useEffect(() => {
         window.scrollTo(0, 0);
         dispatch(get_fruits());
-        dispatch(get_providers());
+        dispatch(get_full_providers());
         dispatch(get_lots(params))
     }, []);
 
@@ -56,7 +56,7 @@ const Home = () => {
 
                 <FontAwesomeIcon icon={faPlusCircle} className={"mx-[50%] text-red-400 text-xl cursor-pointer"}
                                  onClick={handleOpenModalAdd}/>
-                <Filter dispatch={dispatch} setParams={setParams} products={products}  />
+                <Filter dispatch={dispatch} setParams={setParams} products={products}/>
                 <Table data={lots}/>
                 <SetPagination count={count} get_data_page={get_lots_page} data={lots} params={params}/>
 

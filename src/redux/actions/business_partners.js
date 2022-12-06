@@ -23,6 +23,32 @@ import {
 
 import axios from "axios";
 import {setAlert} from "./alert";
+export const get_full_providers = () => async dispatch => {
+    const config = {
+        headers: {
+            'Authorization': `JWT ${localStorage.getItem('access')}`,
+            'Accept': 'application/json'
+        }
+    };
+    try {
+        const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/business-partners/full-providers`, config);
+        if (res.status === 200) {
+            dispatch({
+                type: GET_PROVIDERS_SUCCESS,
+                payload: res.data
+            });
+        } else {
+            dispatch({
+                type: GET_PROVIDERS_FAIL
+            });
+        }
+    } catch (err) {
+        dispatch({
+            type: GET_PROVIDERS_FAIL
+        });
+
+    }
+}
 
 export const get_providers = () => async dispatch => {
     const config = {

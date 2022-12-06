@@ -1,9 +1,8 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import Layout from "../../hocs/Layout";
 import {useDispatch, useSelector} from "react-redux";
 import {get_locations} from "../../redux/actions/management";
 import Filter from "../../components/management/FilterCamera";
-import Modal from "../../components/util/Modal";
 import Table from "../../components/management/TableCameras";
 
 const Camera = () => {
@@ -14,19 +13,7 @@ const Camera = () => {
         dispatch(get_locations());
     }, []);
 
-    /*MODAL*/
-    const [title, setTitle] = useState();
-    const [content, setContent] = useState();
-    let [isOpen, setIsOpen] = useState(false)
-
-
-    const openModal = () => {
-        setIsOpen((prev) => !prev)
-    }
-
-
     return (<Layout>
-        <Modal isOpen={isOpen} close={openModal} title={title} children={content}/>
         <Filter dispatch={dispatch} locations={locations}/>
         <div className="flex flex-wrap flex-row  w-full justify-around   items-center ">
 

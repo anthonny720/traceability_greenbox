@@ -6,11 +6,7 @@ import {get_client, get_sales_client} from "../../redux/actions/business_partner
 import Layout from "../../hocs/Layout";
 import Header from "../../components/business/Header";
 import Tabs from "../../components/business/Tabs";
-import {omit} from "lodash";
 
-function classNames(...classes) {
-    return classes.filter(Boolean).join(' ')
-}
 
 const ClientDetail = () => {
     const {slug} = useParams()
@@ -31,7 +27,8 @@ const ClientDetail = () => {
             <div className="lg:w-8/12 lg:mx-auto mb-8">
                 <Header data={client} text={"ventas"}/>
                 <div className="px-px md:px-3">
-                    <Tabs categories={categories} type={"logistic"} data={client} sales={client_sales ? client_sales : []}
+                    <Tabs categories={categories} type={"logistic"} data={client}
+                          sales={client_sales ? client_sales : []}
                           columns={columns}/>
                 </div>
             </div>

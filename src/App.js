@@ -27,8 +27,6 @@ import Program from "./containers/pages/Program";
 import PackingList from "./containers/pages/PackingList";
 import ProgramDetail from "./containers/pages/ProgramDetail";
 import PackingListDetail from "./containers/pages/PackingListDetail";
-import ProcessProduction from "./containers/pages/ProcessProduction";
-import DetailProcessPineapple from "./containers/pages/DetailProcessPineapple";
 import Report from "./containers/pages/Report";
 import Camera from "./containers/pages/Camera";
 import AnalysisAguaymanto from "./containers/pages/AnalysisAguaymanto";
@@ -91,9 +89,6 @@ const App = () => {
                     <Route exact path="users/" element={<Users/>}/>
                     <Route exact path="me/change-password/" element={<ChangePassword/>}/>
 
-                    {/*Production*/}
-                    <Route exact path="production/" element={<ProcessProduction/>}/>
-                    <Route exact path="production/pineapple/:lot" element={<DetailProcessPineapple/>}/>
 
                     {/*Report*/}
                     <Route exact path="report/:category" element={<Report/>}/>

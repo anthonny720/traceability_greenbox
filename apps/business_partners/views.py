@@ -28,6 +28,16 @@ class ListProviderView(APIView):
             return Response({'error': 'No se encontraron proveedores'}, status=status.HTTP_404_NOT_FOUND)
 
 
+class ListFullProviderView(APIView):
+    def get(self, request):
+        if ProviderMP.objects.exists():
+            providers = ProviderMP.objects.all()
+            serializer = ProviderMPSerializer(providers, many=True)
+            return Response({'results': serializer.data}, status=status.HTTP_200_OK)
+        else:
+            return Response({'error': 'No se encontraron proveedores'}, status=status.HTTP_404_NOT_FOUND)
+
+
 class ListContactView(APIView):
     def get(self, request):
         if Contact.objects.exists():

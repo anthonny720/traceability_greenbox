@@ -194,6 +194,12 @@ class Report(models.Model):
     def get_lot(self):
         return self.lot.lot
 
+    def get_avg_box(self):
+        try:
+            return self.lot.get_total_net_weight() / self.get_quantity_boxes()
+        except:
+            return 0
+
     def __str__(self):
         return self.lot.lot
 

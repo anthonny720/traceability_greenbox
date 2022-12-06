@@ -1,8 +1,8 @@
 import React from 'react';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {
-    faBagShopping, faBarcode,
-    faBox,
+    faBagShopping,
+    faBarcode,
     faBoxes,
     faCartShopping,
     faCircleInfo,

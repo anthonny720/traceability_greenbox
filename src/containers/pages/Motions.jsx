@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 
 import {useDispatch, useSelector} from "react-redux";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faPlusCircle, faTrash} from "@fortawesome/free-solid-svg-icons";
+import {faPlusCircle} from "@fortawesome/free-solid-svg-icons";
 import {MySwal} from "../../helpers/util";
 import Modal from "../../components/util/Modal";
 import Layout from "../../hocs/Layout";
@@ -32,31 +32,6 @@ const Motions = () => {
     }, []);
 
 
-    const [columnsTwo] = useState([{
-        field: 'id', title: 'Id', hidden: true, filtering: false
-    }, {
-        field: 'date',
-        title: 'Fecha', filtering: false,
-        render: (rowData) => <span>{new Date(rowData.date).toLocaleDateString("es-ES", {
-            year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC',
-        })}</span>
-    },
-        {field: 'remitter', title: 'Remitente', filtering: false}, {
-            field: 'receiver',
-            title: 'Destinatario', filtering: false
-        }, {field: 'quantity', title: 'Cantidad', filtering: false}, {
-            field: "actions", title: "Acciones", filtering: false, render: (rowData) =>
-                <div>
-
-                    <FontAwesomeIcon icon={faTrash} className={"text-red-400 cursor-pointer"}
-                                     onClick={(e) => {
-                                         handleDelete(rowData.id)
-                                     }}
-                    />
-
-                </div>
-
-        }]);
     const openModal = () => {
         setIsOpen((prev) => !prev)
     }

@@ -4,8 +4,8 @@ from apps.report.models import Report
 
 
 class ReportSerializer(serializers.ModelSerializer):
+    avg_box=serializers.CharField(source='get_avg_box',read_only=True)
     provider = serializers.CharField(source='get_provider', read_only=True)
-    certificate = serializers.CharField(source='lot.certified', read_only=True)
     lot = serializers.CharField(source='get_lot', read_only=True)
     provider_guide = serializers.CharField(source='get_provider_guide', read_only=True)
     carrier_guide = serializers.CharField(source='get_carrier_guide', read_only=True)

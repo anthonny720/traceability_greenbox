@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {faEdit, faPlusCircle, faTrash} from "@fortawesome/free-solid-svg-icons";
+import {faPlusCircle} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {delete_contact, get_clients_page, get_contacts, get_contacts_page} from "../../redux/actions/business_partners";
+import {delete_contact, get_contacts, get_contacts_page} from "../../redux/actions/business_partners";
 import Layout from "../../hocs/Layout";
 import Modal from "../../components/util/Modal";
 import Form from "../../components/business/Form";
