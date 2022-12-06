@@ -5,18 +5,9 @@ import {useDispatch} from "react-redux";
 function SetPagination({get_data_page, data, count, scroll, params}) {
     const dispatch = useDispatch();
     const [active, setActive] = useState(1);
-    const [listingsPerPage, setListingsPerPage] = useState(6);
+    const [listingsPerPage] = useState(6);
     const [currentPage, setCurrentPage] = useState(1);
 
-    const visitPage = (page) => {
-        scroll && window.scrollTo(0, 0);
-        // window.scrollTo(0, 0);
-        setCurrentPage(page);
-        setActive(page);
-        {
-            params ? dispatch(get_data_page(params, page)) : dispatch(get_data_page(page))
-        }
-    }
 
     const previous_number = () => {
         scroll && window.scrollTo(0, 0);
@@ -24,9 +15,9 @@ function SetPagination({get_data_page, data, count, scroll, params}) {
         if (currentPage !== 1) {
             setCurrentPage(currentPage - 1);
             setActive(currentPage - 1);
-            {
-                params ? dispatch(get_data_page(params, currentPage - 1)) : dispatch(get_data_page(currentPage - 1))
-            }
+
+            params ? dispatch(get_data_page(params, currentPage - 1)) : dispatch(get_data_page(currentPage - 1))
+
         }
     };
 
@@ -36,9 +27,9 @@ function SetPagination({get_data_page, data, count, scroll, params}) {
         if (currentPage !== Math.ceil(data.length / 3)) {
             setCurrentPage(currentPage + 1);
             setActive(currentPage + 1);
-            {
-                params ? dispatch(get_data_page(params, currentPage + 1)) : dispatch(get_data_page(currentPage + 1))
-            }
+
+            params ? dispatch(get_data_page(params, currentPage + 1)) : dispatch(get_data_page(currentPage + 1))
+
         }
     };
 

@@ -5,15 +5,9 @@ import {useDispatch} from "react-redux";
 function SetPagination({get_data_page, data, count, category, params}) {
     const dispatch = useDispatch();
     const [active, setActive] = useState(1);
-    const [listingsPerPage, setListingsPerPage] = useState(6);
+    const [listingsPerPage,] = useState(6);
     const [currentPage, setCurrentPage] = useState(1);
 
-    const visitPage = (page) => {
-        // window.scrollTo(0, 0);
-        setCurrentPage(page);
-        setActive(page);
-        dispatch(get_data_page(category, params, page))
-    }
 
     const previous_number = () => {
         // window.scrollTo(0, 0);

@@ -7,7 +7,7 @@ import React, {useRef} from "react";
 import Humanize from "humanize-plus";
 
 const Table = ({data, edit}) => {
-    const columns = ['Acciones', 'Semana', 'Mes', 'Año', 'Lote', 'Fecha de entrada', 'Fecha de descarga', 'Hora de salida Campo', 'Hora de llegada', 'Variedad', 'Condicion', 'Conductor', 'Transporte', 'Placa', 'Guia de transportista', 'Guia de proveedor', 'Certificado', 'Proveedor', 'Procedencia', 'Parcela', 'Certificado', 'Cantidad de jabas', 'Peso bruto', 'Tara', 'Peso neto', 'Peso guia', 'Diferencia netos con guia', '% Descuento', 'Kg descontados', 'Kg aprovechables', 'Precio Campo', 'Precio planta', 'Flete', 'Total a pagar', 'Observaciones']
+    const columns = ['Acciones', 'Semana', 'Mes', 'Año', 'Lote', 'Fecha de entrada', 'Fecha de descarga', 'Hora de salida Campo', 'Hora de llegada', 'Variedad', 'Condicion', 'Conductor', 'Transporte', 'Placa', 'Guia de transportista', 'Guia de proveedor', 'Proveedor', 'Procedencia', 'Parcela', 'Promedio jabas', 'Cantidad de jabas', 'Peso bruto', 'Tara', 'Peso neto', 'Peso guia', 'Diferencia netos con guia', '% Descuento', 'Kg descontados', 'Kg aprovechables', 'Precio Campo', 'Precio planta', 'Flete', 'Total a pagar', 'Observaciones']
     const tableRef = useRef(null);
     return (<div className="overflow-x-auto relative scrollbar-hide">
         <DownloadTableExcel
@@ -55,11 +55,10 @@ const Table = ({data, edit}) => {
                 <td className="py-4 px-6 whitespace-nowrap text-center">{row?.code}</td>
                 <td className="py-4 px-6 whitespace-nowrap text-center">{row?.carrier_guide}</td>
                 <td className="py-4 px-6 whitespace-nowrap text-center">{row?.provider_guide}</td>
-                <td className="py-4 px-6 whitespace-nowrap text-center">{row?.certificate}</td>
                 <td className="py-4 px-6 whitespace-nowrap text-center">{row?.provider}</td>
                 <td className="py-4 px-6 whitespace-nowrap text-center">{row?.origin}</td>
                 <td className="py-4 px-6 whitespace-nowrap text-center">{row?.parcel}</td>
-                <td className="py-4 px-6 whitespace-nowrap text-center">{row?.certificate}</td>
+                <td className="py-4 px-6 whitespace-nowrap text-center">{row?.avg_box}</td>
                 <td className="py-4 px-6 whitespace-nowrap text-center">{row?.number_boxes}</td>
                 <td className="py-4 px-6 whitespace-nowrap text-center">{Humanize.formatNumber(row?.brute_weight, 2)}</td>
                 <td className="py-4 px-6 whitespace-nowrap text-center">{Humanize.formatNumber(row?.tare, 2)}</td>
@@ -74,22 +73,6 @@ const Table = ({data, edit}) => {
                 <td className="py-4 px-6 whitespace-nowrap text-center">{Humanize.formatNumber(row?.freight, 2)}</td>
                 <td className="py-4 px-6 whitespace-nowrap text-center">{Humanize.formatNumber(row?.total_amount, 2)}</td>
                 <td className="py-4 px-6 whitespace-nowrap text-center">{row?.observations}</td>
-
-                <td scope="row"
-                    className="py-4 px-6  font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                    <div>
-                        {/*<Link to={`/lot/${row.lot}`}>*/}
-                        {/*    <FontAwesomeIcon className={"hover:text-orange-400 text-black"} title={"Detalles"}*/}
-                        {/*                     icon={faEye}/>*/}
-                        {/*</Link>*/}
-                        {/*<Link to={`/process-line/${row.lot}`}>*/}
-                        {/*    <FontAwesomeIcon className={"text-[#26d07d] ml-2 hover:text-green-600"}*/}
-                        {/*                     title={"Linea de Proceso"}*/}
-                        {/*                     icon={faWorm}/>*/}
-                        {/*</Link>*/}
-                    </div>
-                </td>
-
             </tr>)) : <tr>
                 {map(columns, (column, index) => (
                     <th key={index} className="px-6 py-3 text-center"><Skeleton count={10}/></th>))}

@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import Layout from "../../hocs/Layout";
 import {useParams} from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faPlusCircle, faTrash} from "@fortawesome/free-solid-svg-icons";
+import {faPlusCircle} from "@fortawesome/free-solid-svg-icons";
 import {useDispatch, useSelector} from "react-redux";
 import {delete_data_program, get_data_program, get_program} from "../../redux/actions/logistic";
 import Modal from "../../components/util/Modal";
@@ -18,29 +18,7 @@ const ProgramDetail = () => {
     const data_program = useSelector(state => state.Logistic.data_program)
     const program = useSelector(state => state.Logistic.program)
     const reception = useSelector(state => state.Process.reception)
-    const [columns] = useState([{
-        field: 'date', title: 'Fecha de Recepción', filtering: false, render: (rowData) => <p
-            className={"text-center text-xs"}>{new Date(rowData.date).toLocaleDateString('es-PE', {
-            timeZone: 'UTC', day: 'numeric', month: 'long', year: 'numeric'
-        })}</p>
-    }, {
-        field: 'release_date', title: 'Fecha de liberación', filtering: false, render: (rowData) => <p
-            className={"text-center text-xs"}>{new Date(rowData.release_date).toLocaleDateString('es-PE', {
-            timeZone: 'UTC', day: 'numeric', month: 'long', year: 'numeric'
-        })}</p>
-    }, {
-        field: 'expiration_date', title: 'Fecha de expiración', filtering: false, render: (rowData) => <p
-            className={"text-center text-xs"}>{new Date(rowData.expiration_date).toLocaleDateString('es-PE', {
-            timeZone: 'UTC', day: 'numeric', month: 'long', year: 'numeric'
-        })}</p>
-    }, {field: 'lot', title: 'Lote', filtering: false}, {
-        field: 'description', title: 'Descripción', filtering: false
-    }, {field: 'quantity', title: 'Cantidad', filtering: false}, {
-        field: "actions", filtering: false, title: "Acciones", render: (rowData) => <div>
-            <FontAwesomeIcon className={"text-red-400 cursor-pointer"} title={"Eliminar"} icon={faTrash}
-                             onClick={() => handleDeleteData(rowData.id)}/>
-        </div>
-    }]);
+
 
     useEffect(() => {
         dispatch({type: GET_DATA_PROGRAM_FAIL})

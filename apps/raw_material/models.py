@@ -44,7 +44,6 @@ class Lot(models.Model):
     category = models.ForeignKey(Fruits, on_delete=models.PROTECT, related_name="fruit_entry",
                                  verbose_name="Categoria")
     description = models.CharField(max_length=500, blank=True, null=True, verbose_name="Descripcion")
-    certified = models.CharField(max_length=500, blank=True, null=True, verbose_name="Certificado")
     discount_percentage = models.DecimalField(decimal_places=10, max_digits=15, default=0, blank=True, null=True,
                                               verbose_name="Porcentaje de Descuento")
     driver = models.ForeignKey(Contact, on_delete=models.PROTECT, related_name="driver_entry", verbose_name="Conductor",

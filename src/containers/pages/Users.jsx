@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 
 import {useDispatch, useSelector} from "react-redux";
-import {faEdit, faPlusCircle, faTrash} from "@fortawesome/free-solid-svg-icons";
+import {faPlusCircle} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {MySwal} from "../../helpers/util";
 import {delete_user, get_users} from "../../redux/actions/auth";
