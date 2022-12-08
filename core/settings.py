@@ -106,16 +106,16 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'greenbox_bbdd',
-#         'USER': 'anthonny',
-#         'PASSWORD': 'devcode720G-B',
-#         'HOST': 'localhost',
-#         'PORT': '',
-#     }
-# }
+    # DATABASES = {
+    #     'default': {
+    #         'ENGINE': 'django.db.backends.postgresql',
+    #         'NAME': 'greenbox_bbdd',
+    #         'USER': 'anthonny',
+    #         'PASSWORD': 'devcode720G-B',
+    #         'HOST': 'localhost',
+    #         'PORT': '',
+    #     }
+    # }
 
 # DATABASES = {"default": env.db("DATABASE_URL", default="postgres:///logistic_gb"), }
 DATABASES["default"]["ATOMIC_REQUESTS"] = True

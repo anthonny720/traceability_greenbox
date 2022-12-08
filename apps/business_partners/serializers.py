@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from apps.business_partners.models import ProviderMP, Contact, Client, Carrier
+from apps.business_partners.models import ProviderMP, Contact, Client, Carrier, BusinessMaquila
 
 
 class ProviderMPSerializer(serializers.ModelSerializer):
@@ -65,3 +65,17 @@ class CarrierSerializer(serializers.ModelSerializer):
     class Meta:
         model = Carrier
         fields = '__all__'
+
+
+class ProviderMaquilaDetailSerializer(serializers.ModelSerializer):
+    money = serializers.SerializerMethodField()
+
+    class Meta:
+        model = BusinessMaquila
+        fields = '__all__'
+
+    def get_money(self, obj):
+        return obj.get_money_display()
+
+    def to_internal_value(self, data):
+        return data

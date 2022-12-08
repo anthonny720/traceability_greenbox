@@ -6,6 +6,7 @@ const Information = ({data}) => {
         <div className="bg-gray-200 p-2 h-8 w-max mb-4 md:mb-0 rounded-md flex items-center justify-center">
             <div className="flex items-center">
                 <div className="h-1 w-1 rounded-full bg-green-500 mr-1"/>
+                <span className="text-xs text-black font-normal">procesado: {data?.total_indicted}</span>
                 <span className="text-xs text-black font-normal">Total de jabas: {data?.quantity_boxes}</span>
             </div>
         </div>

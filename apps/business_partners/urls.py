@@ -2,7 +2,7 @@ from django.urls import path
 
 from apps.business_partners.views import ListProviderView, ListContactView, AddContactView, UpdateContactView, \
     DeleteContactView, ListClientView, DetailClientView, DetailProviderView, SalesProviderView, SalesClientView, \
-    DeleteCarrierView, UpdateCarrierView, AddCarrierView, ListCarrierView, ListFullProviderView
+    DeleteCarrierView, UpdateCarrierView, AddCarrierView, ListCarrierView, ListFullProviderView, ListBusinessMaquilaView
 
 app_name = "business_partners"
 urlpatterns = [
@@ -18,6 +18,7 @@ urlpatterns = [
     path('clients/<str:slug>', DetailClientView.as_view()),
     path('providers', ListProviderView.as_view()),
     path('full-providers', ListFullProviderView.as_view()),
+    path('business-maquila', ListBusinessMaquilaView.as_view()),
     path('providers/<str:slug>', DetailProviderView.as_view()),
     path('providers/sales/<str:slug>', SalesProviderView.as_view()),
     path('clients/sales/<str:slug>', SalesClientView.as_view(), name='sales-client'),

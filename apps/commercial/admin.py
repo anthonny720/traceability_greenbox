@@ -2,7 +2,7 @@ from django.contrib import admin
 from import_export.admin import ImportExportModelAdmin
 from simple_history.admin import SimpleHistoryAdmin
 
-from apps.commercial.models import Lot, Condition, Provider, Packing, Presentation, Client, Variety, Cut, Product, Type, \
+from apps.commercial.models import Lot, Condition, Packing, Presentation, Variety, Cut, Product, Type, \
     Group, Family
 
 
@@ -15,12 +15,12 @@ class LotAdmin(ImportExportModelAdmin, SimpleHistoryAdmin):
                     'family',
                     'group',
                     'product',
-                    'cut',
+                    # 'cut',
                     'condition')
     search_fields = ('name', 'product',)
     list_per_page = 20
     date_hierarchy = 'production_date'
-    list_filter = ('product', 'family', 'group', 'cut', 'condition', 'presentation',)
+    list_filter = ('product', 'family', 'group', 'condition', 'presentation',)
 
 
 @admin.register(Family)
@@ -65,13 +65,6 @@ class VarietyAdmin(ImportExportModelAdmin, SimpleHistoryAdmin):
     list_per_page = 20
 
 
-@admin.register(Client)
-class ClientAdmin(ImportExportModelAdmin, SimpleHistoryAdmin):
-    list_display = ('name',)
-    search_fields = ('name',)
-    list_per_page = 20
-
-
 @admin.register(Presentation)
 class PresentationAdmin(ImportExportModelAdmin, SimpleHistoryAdmin):
     list_display = ('name',)
@@ -84,13 +77,6 @@ class PackingAdmin(ImportExportModelAdmin, SimpleHistoryAdmin):
     list_display = ('name',)
     search_fields = ('name',)
     list_filter = ('category',)
-    list_per_page = 20
-
-
-@admin.register(Provider)
-class ProviderAdmin(ImportExportModelAdmin, SimpleHistoryAdmin):
-    list_display = ('name',)
-    search_fields = ('name',)
     list_per_page = 20
 
 

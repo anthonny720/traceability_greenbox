@@ -56,7 +56,7 @@ const Form = ({
                             className="scrollbar-hide form-select appearance-none block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300       rounded transition       ease-in-out
                     m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                             aria-label="Default select example">
-                        <option value={null}>Seleccione un producto</option>
+                        <option value={null}></option>
                         {products !== null && map(products, product => (
                             <option key={product.id} value={product.id}>{product.name}</option>))}
                     </select>
@@ -69,7 +69,7 @@ const Form = ({
                             className="scrollbar-hide form-select appearance-none block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300       rounded transition       ease-in-out
                     m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                             aria-label="Default select example">
-                        <option value={null}>Seleccione una familia</option>
+                        <option value={null}></option>
                         {family !== null && map(family, f => (
                             <option key={f.id} value={f.id}>{f.name}</option>))}
                     </select>
@@ -82,7 +82,7 @@ const Form = ({
                             className="scrollbar-hide form-select appearance-none block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300       rounded transition       ease-in-out
                     m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                             aria-label="Default select example">
-                        <option value={null}>Seleccione un grupo</option>
+                        <option value={null}></option>
                         {group !== null && map(group, g => (
                             <option key={g.id} value={g.id}>{g.name}</option>))}
                     </select>
@@ -95,7 +95,7 @@ const Form = ({
                             className="scrollbar-hide form-select appearance-none block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300       rounded transition       ease-in-out
                     m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                             aria-label="Default select example">
-                        <option value={null}>Seleccione un tipo</option>
+                        <option value={null}></option>
                         {type_inf !== null && map(type_inf, t => (
                             <option key={t.id} value={t.id}>{t.name}</option>))}
                     </select>
@@ -108,7 +108,7 @@ const Form = ({
                             className="scrollbar-hide form-select appearance-none block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300       rounded transition       ease-in-out
                     m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                             aria-label="Default select example">
-                        <option value={null}>Seleccione un corte</option>
+                        <option value={null}></option>
                         {cut !== null && map(cut, c => (
                             <option key={c.id} value={c.id}>{c.name}</option>))}
                     </select>
@@ -121,7 +121,7 @@ const Form = ({
                             className="scrollbar-hide form-select appearance-none block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300       rounded transition       ease-in-out
                     m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                             aria-label="Default select example">
-                        <option value={null}>Seleccione una variedad</option>
+                        <option value={null}></option>
                         {variety !== null && map(variety, v => (
                             <option key={v.id} value={v.id}>{v.name}</option>))}
                     </select>
@@ -134,7 +134,7 @@ const Form = ({
                             className="scrollbar-hide form-select appearance-none block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300       rounded transition       ease-in-out
                     m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                             aria-label="Default select example">
-                        <option value={null}>Seleccione un cliente</option>
+                        <option value={null}></option>
                         {client !== null && map(client, c => (
                             <option key={c.id} value={c.id}>{c.name}</option>))}
                     </select>
@@ -147,7 +147,7 @@ const Form = ({
                             className="scrollbar-hide form-select appearance-none block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300       rounded transition       ease-in-out
                     m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                             aria-label="Default select example">
-                        <option value={null}>Seleccione una presentación</option>
+                        <option value={null}></option>
                         {presentation !== null && map(presentation, p => (
                             <option key={p.id} value={p.id}>{p.name}</option>))}
                     </select>
@@ -160,7 +160,7 @@ const Form = ({
                             className="scrollbar-hide form-select appearance-none block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300       rounded transition       ease-in-out
                     m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                             aria-label="Default select example">
-                        <option value={null}>Seleccione un embalaje</option>
+                        <option value={null}></option>
                         {packaging !== null && map(packaging, p => (
                             <option key={p.id} value={p.id}>{p.name}</option>))}
                     </select>
@@ -173,7 +173,7 @@ const Form = ({
                             className="scrollbar-hide form-select appearance-none block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300       rounded transition       ease-in-out
                     m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                             aria-label="Default select example">
-                        <option value={null}>Seleccione un empaque</option>
+                        <option value={null}></option>
                         {packing !== null && map(packing, p => (
                             <option key={p.id} value={p.id}>{p.name}</option>))}
                     </select>
@@ -186,7 +186,7 @@ const Form = ({
                             className="scrollbar-hide form-select appearance-none block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300       rounded transition       ease-in-out
                     m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                             aria-label="Default select example">
-                        <option value={null}>Seleccione un proveedor</option>
+                        <option value={null}></option>
                         {provider !== null && map(provider, p => (
                             <option key={p.id} value={p.id}>{p.name}</option>))}
                     </select>
@@ -199,7 +199,7 @@ const Form = ({
                             className="scrollbar-hide form-select appearance-none block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding bg-no-repeat border border-solid border-gray-300       rounded transition       ease-in-out
                     m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                             aria-label="Default select example">
-                        <option value={null}>Seleccione una condición</option>
+                        <option value={null}></option>
                         {condition !== null && map(condition, c => (
                             <option key={c.id} value={c.id}>{c.name}</option>))}
                     </select>
@@ -256,20 +256,20 @@ const newSchema = () => {
         product: Yup.number().min(1).required(),
         family: Yup.number().min(1).required(),
         group: Yup.number().min(1).required(),
-        type_inf: Yup.number().min(1).required(),
-        cut: Yup.number().min(1).required(),
+        type_inf: Yup.number().min(1),
+        cut: Yup.number().min(1),
         condition: Yup.number().min(1).required(),
         presentation: Yup.number().min(1).required(),
-        packaging: Yup.number().min(1).required(),
-        packing: Yup.number().min(1).required(),
+        packaging: Yup.number().min(1),
+        packing: Yup.number().min(1),
         stock: Yup.number().min(0).required(),
-        variety: Yup.number().min(1).required(),
-        provider: Yup.number().min(1).required(),
-        client: Yup.number().min(1).required(),
-        name: Yup.string().min(1).required(),
-        production_date: Yup.string().min(1).required(),
-        expiring_date: Yup.string().min(1).required(),
-        boxes: Yup.number().min(0).positive().integer().required(),
+        variety: Yup.number().min(1),
+        provider: Yup.number().min(1),
+        client: Yup.number().min(1),
+        name: Yup.string().min(1),
+        production_date: Yup.string().min(1),
+        expiring_date: Yup.string().min(1),
+        boxes: Yup.number().min(0).positive().integer(),
         fcl: Yup.string(),
         observation: Yup.string(),
     }

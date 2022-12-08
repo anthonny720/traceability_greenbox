@@ -1,6 +1,8 @@
 import {
     ADD_LOT_COMMERCIAL_FAIL,
     ADD_LOT_COMMERCIAL_SUCCESS,
+    GET_BUSINESS_MAQUILA_FAIL,
+    GET_BUSINESS_MAQUILA_SUCCESS,
     GET_CLIENT_COMMERCIAL_FAIL,
     GET_CLIENT_COMMERCIAL_SUCCESS,
     GET_CONDITION_COMMERCIAL_FAIL,
@@ -307,6 +309,32 @@ export const get_provider = () => async dispatch => {
 
     }
 }
+export const get_business_maquila = () => async dispatch => {
+    const config = {
+        headers: {
+            'Authorization': `JWT ${localStorage.getItem('access')}`, 'Accept': 'application/json'
+        }
+    };
+
+    try {
+        const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/commercial/business-maquila`, config);
+        if (res.status === 200) {
+            dispatch({
+                type: GET_BUSINESS_MAQUILA_SUCCESS, payload: res.data
+            });
+        } else {
+            dispatch({
+                type: GET_BUSINESS_MAQUILA_FAIL
+            });
+        }
+    } catch (err) {
+        dispatch({
+            type: GET_BUSINESS_MAQUILA_FAIL
+        });
+
+    }
+}
+
 export const get_condition = () => async dispatch => {
     const config = {
         headers: {

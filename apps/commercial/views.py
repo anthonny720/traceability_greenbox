@@ -2,9 +2,11 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from apps.commercial.models import Product, Condition, Provider, Packing, Presentation, Client, Variety, Cut, Type, \
+from apps.business_partners.models import BusinessMaquila, Client
+from apps.business_partners.serializers import ProviderMaquilaDetailSerializer
+from apps.commercial.models import Product, Condition, Packing, Presentation, Variety, Cut, Type, \
     Group, Family, Lot
-from apps.commercial.serializers import ProductSerializer, ProviderSerializer, ConditionSerializer, PackingSerializer, \
+from apps.commercial.serializers import ProductSerializer, ConditionSerializer, PackingSerializer, \
     PresentationSerializer, ClientSerializer, VarietySerializer, CutSerializer, TypeSerializer, GroupSerializer, \
     FamilySerializer, LotSerializer
 from apps.util.pagination import SetPagination
@@ -114,9 +116,9 @@ class ListPackingView(APIView):
 
 class ListProviderView(APIView):
     def get(self, request):
-        if Provider.objects.filter().exists():
-            providers = Provider.objects.all()
-            serializer = ProviderSerializer(providers, many=True)
+        if BusinessMaquila.objects.filter().exists():
+            providers = BusinessMaquila.objects.all()
+            serializer = ProviderMaquilaDetailSerializer(providers, many=True)
             return Response({'result': serializer.data}, status=status.HTTP_200_OK)
         else:
             return Response({'error': 'No se encontraron registros'}, status=status.HTTP_404_NOT_FOUND)
