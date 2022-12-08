@@ -5,9 +5,9 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from apps.business_partners.models import ProviderMP, Contact, Client, Carrier
+from apps.business_partners.models import ProviderMP, Contact, Client, Carrier, BusinessMaquila
 from apps.business_partners.serializers import ProviderMPSerializer, ContactSerializer, ClientsListSerializer, \
-    ClientsDetailSerializer, ProviderDetailSerializer, CarrierSerializer
+    ClientsDetailSerializer, ProviderDetailSerializer, CarrierSerializer, ProviderMaquilaDetailSerializer
 from apps.raw_material.models import Lot
 from apps.raw_material.serializers import SalesSerializer
 from apps.util.pagination import SetPagination
@@ -36,6 +36,16 @@ class ListFullProviderView(APIView):
             return Response({'results': serializer.data}, status=status.HTTP_200_OK)
         else:
             return Response({'error': 'No se encontraron proveedores'}, status=status.HTTP_404_NOT_FOUND)
+
+
+class ListBusinessMaquilaView(APIView):
+    def get(self, request):
+        if BusinessMaquila.objects.exists():
+            providers = BusinessMaquila.objects.all()
+            serializer = ProviderMaquilaDetailSerializer(providers, many=True)
+            return Response({'results': serializer.data}, status=status.HTTP_200_OK)
+        else:
+            return Response({'error': 'No se encontraron plantas de maquilado'}, status=status.HTTP_404_NOT_FOUND)
 
 
 class ListContactView(APIView):

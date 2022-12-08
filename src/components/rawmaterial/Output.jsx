@@ -13,8 +13,8 @@ export class Output extends React.PureComponent {
             net_final_weight: "PESO NETO DE SALIDA PARA PRODUCCIÓN"
         }
         const {info = "info"} = this.props;
-        const totalNetWeight = sum(map(info.data, (item) => item.net_weight))
-        const totalNetFinalWeight = sum(map(info.data, (item) => item.net_final_weight))
+        const totalNetWeight = sum(map(info.data, (item) => parseInt(item.net_weight)))
+        const totalNetFinalWeight = sum(map(info.data, (item) => parseInt(item.net_final_weight)))
         return (<div className={"w-full p-36 mr-2"}>
             {/*logo*/}
             <div className='grid grid-cols-3 gap-4 flex items-center justify-center'>

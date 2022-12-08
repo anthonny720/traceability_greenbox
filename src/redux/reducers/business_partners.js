@@ -11,6 +11,8 @@ import {
     DETAIL_CLIENT_SUCCESS,
     DETAIL_PROVIDER_FAIL,
     DETAIL_PROVIDER_SUCCESS,
+    GET_BUSINESS_MAQUILA_FAIL,
+    GET_BUSINESS_MAQUILA_SUCCESS,
     GET_CARRIER_FAIL,
     GET_CARRIER_SUCCESS,
     GET_CLIENTS_FAIL,
@@ -41,6 +43,7 @@ const initialState = {
     count_providers: null,
     count_carriers: null,
     count_contacts: null,
+    maquila: null
 }
 export default function Business(state = initialState, action) {
     const {type, payload} = action;
@@ -52,6 +55,14 @@ export default function Business(state = initialState, action) {
         case GET_PROVIDERS_FAIL:
             return {
                 ...state, providers: null, count_providers: null
+            }
+        case GET_BUSINESS_MAQUILA_SUCCESS:
+            return {
+                ...state, maquila: payload.result
+            }
+        case GET_BUSINESS_MAQUILA_FAIL:
+            return {
+                ...state, maquila: null
             }
         case GET_CONTACTS_SUCCESS:
             return {

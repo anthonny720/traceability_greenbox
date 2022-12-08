@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from apps.commercial.models import Product, Provider, Packing, Presentation, Client, Variety, Cut, Condition, Type, \
+from apps.commercial.models import Product, Packing, Presentation, Client, Variety, Cut, Condition, Type, \
     Group, Family, Lot
 
 
@@ -66,13 +66,8 @@ class PackingSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class ProviderSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Provider
-        fields = '__all__'
-
-
 class LotSerializer(serializers.ModelSerializer):
+    fcl_name = serializers.CharField(source='fcl.reception.full_name', read_only=True)
     family_name = serializers.CharField(source='family.name', read_only=True)
     group_name = serializers.CharField(source='group.name', read_only=True)
     type_inf_name = serializers.CharField(source='type_inf.name', read_only=True)

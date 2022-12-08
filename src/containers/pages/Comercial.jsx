@@ -3,6 +3,7 @@ import Layout from "../../hocs/Layout";
 import SummaryStock from "../../components/commercial/Summary";
 import {useDispatch, useSelector} from "react-redux";
 import {
+    get_business_maquila,
     get_client,
     get_condition,
     get_cut,
@@ -14,7 +15,6 @@ import {
     get_packing,
     get_presentation,
     get_products,
-    get_provider,
     get_type,
     get_variety
 } from "../../redux/actions/commercial";
@@ -40,7 +40,7 @@ const Commercial = () => {
     const presentation = useSelector(state => state.Commercial.presentation);
     const packaging = useSelector(state => state.Commercial.packaging);
     const packing = useSelector(state => state.Commercial.packing);
-    const provider = useSelector(state => state.Commercial.provider);
+    const provider = useSelector(state => state.Commercial.maquila);
     const client = useSelector(state => state.Commercial.client);
 
 
@@ -55,7 +55,7 @@ const Commercial = () => {
         dispatch(get_presentation());
         dispatch(get_packaging());
         dispatch(get_packing());
-        dispatch(get_provider());
+        dispatch(get_business_maquila());
         dispatch(get_condition());
         dispatch(get_lots(params));
     }, [dispatch]);

@@ -36,8 +36,8 @@ class Lot(models.Model):
 
     condition = models.CharField(max_length=100, blank=True, null=True, verbose_name="Condición")
     variety = models.CharField(max_length=100, blank=True, null=True, verbose_name="Variedad")
-    departure_time = models.TimeField(blank=True, null=True, verbose_name="Hora de Salida de Acopio")
-    arrival_time = models.TimeField(blank=True, null=True, verbose_name="Hora de Llegada a Planta")
+    arrival = models.DateTimeField(blank=True, null=True, verbose_name="Llegada a Planta")
+    departure = models.DateTimeField(blank=True, null=True, verbose_name="Salida de Acopio")
     lot = models.CharField(max_length=13, unique=True, verbose_name="Lote")
     quality = models.DecimalField(decimal_places=1, max_digits=3, default=0, blank=True, null=True,
                                   verbose_name="Muestra de Calidad")
@@ -60,6 +60,18 @@ class Lot(models.Model):
 
     def __str__(self):
         return self.lot
+
+    def get_departure_time(self):
+        try:
+            return self.arrival.strftime("%d/%m/%Y %H:%M")
+        except Exception as e:
+            return "0"
+
+    def get_arrival_time(self):
+        try:
+            return self.departure.strftime("%d/%m/%Y %H:%M")
+        except:
+            return "0"
 
     def get_driver(self):
         if self.driver:
@@ -284,16 +296,17 @@ class Lot(models.Model):
         ti = 0
         try:
             for t in self.data.all():
-                ti += t.get_indicted_size()
+                if t.indicted:
+                    ti += t.get_net_final_weight()
             return ti
-        except:
-            return ti
+        except Exception as e:
+            return str(e)
 
     def get_stock(self):
         try:
             return self.get_total_net_weight() - self.get_total_indicted() - self.get_decrease() - float(self.quality)
-        except:
-            return 0
+        except Exception as e:
+            return str(e)
 
     def get_total_brute_weight(self):
 
@@ -384,15 +397,8 @@ class ILot(models.Model):
     def get_net_final_weight(self):
         try:
             return self.final_weight - self.tare
-        except:
-            return 0
-
-    def get_indicted_size(self):
-        try:
-            if self.indicted:
-                return self.get_net_final_weight()
-        except:
-            return 0
+        except Exception as e:
+            return str(e)
 
     def get_indicted(self):
         if self.indicted:
